@@ -1,6 +1,9 @@
-name: REPLACEREPONAME
-title: FIXME Course Title
+name: rhde-bootc-provision
+title: Provisioning Red Hat Device Edge Systems with Image Mode for RHEL
 version: 1
+asciidoc:
+  attributes:
+    experimental: true
 nav:
 - modules/ROOT/nav.adoc
 - modules/LABENV/nav.adoc

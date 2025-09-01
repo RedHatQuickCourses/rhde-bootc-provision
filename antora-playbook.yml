@@ -1,11 +1,12 @@
 site:
-  title: FIXME Course Title
-  start_page: REPLACEREPONAME::index.adoc
+  title: Provisioning Red Hat Device Edge Systems with Image Mode for RHEL
+  start_page: rhde-bootc-provision::index.adoc
 
 content:
   sources:
   - url: ./
-
+  - url: https://github.com/RedHatQuickCourses/rhde-bootc-samples.git
+  
 asciidoc:
   attributes:
     page-pagination: true

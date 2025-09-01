@@ -1,60 +1,23 @@
-## Getting started with a new training content repository
+# About this quick course
 
-- Open the [course-starter-template](https://github.com/RedHatQuickCourses/course-starter-template)
+This is the second in a series of quick courses about using image mode for RHEL with Red Hat Device Edge.
 
-- Click on `Use This template` button and select `Create a new repository` option.
+* [Building Red Hat Device Edge System Images with Image Mode for RHEL](http://https://redhatquickcourses.github.io/rhde-bootc-build/) (pre-requisite course)
 
-![use-this-template.png](./images/use-this-template.png)
+* Provisioning Red Hat Device Edge Systems with Image Mode for RHEL (this course)
 
-- On `Create a new repository` page, Select the options as highlighted in the below image and then click `Create repository` button at the bottom of the page.
+* Updating and Repurposing Red Hat Device Edge Systems with Image Mode for RHEL (not created yet)
 
-![create-new-repo.png](./images/create-new-repo.png)
+Design docs for the course series and individual courses are available only to Red Hat employees:
 
-- Clone this repository on your local system:
-```
-git clone git@github.com:RedHatQuickCourses/my-training-repository.git
-```
-NOTE: Use your repository url in the above command.
+* [Learning approach design](https://docs.google.com/document/d/1vINNgOw9NVnxssptkDOqBnHhFCaY9eW5ATwT2dOhkdU/edit?usp=sharing)
 
-- Go in to the course repository directory and initialize the course.
-``` 
-cd my-training-repository/
-sh course-init.sh --type bfx --lab demo
-```
-NOTE: If you are using Mac, use *zsh* in place of *sh* in the above command.
+* [Design of this course](https://docs.google.com/document/d/12tShckf7LVLsD3U_vUZ4kYA8eOGNZwfH-Luk-wA91-Y/edit?usp=sharing)
 
-Sample output:
-```
-Initializing my-training-repository . . . done
+Sample code for this course series is in its own [git repository](https://github.com/RedHatQuickCourses/rhde-bootc-samples).
 
-Please replace the specified strings in the files below and commit the changes before proceeding with the course development.
-antora.yml:title: REPLACE Course Title
-```
+Figures are in a [google slides](https://docs.google.com/presentation/d/17AHILn-P_dRWYGDkk2EuHAKackIKftrhpRRMTt-ViAg/edit?usp=sharing) which is available only to Red Hat employees, but they are exported to SVG or PNG and available alongside the asciidoc sources.
 
-- Edit the files prompted by course initialization script.
+Refer to the [Red Hat Quick Courses Contributor Guide](https://redhatquickcourses.github.io/welcome/1/guide/overview.html) for instructions about collaborating in this repository. **Click here: [![Contribute](https://www.eclipse.org/che/contribute.svg)](https://devspaces.apps.tools-na100.dev.ole.redhat.com/#https://github.com/RedHatQuickCourses/rhde-bootc-build) to start the development using devspace.**
 
-- Commit the changes done by course initialization script and your manual edits.
-```
- git status 
- git add -A; git commit -m "course initialization"
- git push origin main 
-```
-
-- Browse your git repository url 
-
-- On your github repo page, on left hand side pane, click on settings gear icon near `About` heading.
-
-- Click `Use your GitHub Pages website` option to select (checked) it and then click `Save changes` button.
-
-![github-pages-setting](./images/github-pages-setting.png)
-
-- You should now see the link to access the rendered content within that same block.
-
-![quickcourse-rendered-url](./images/quickcourse-rendered-url.png)
-
-FIXME: highlight the relevant area on images.
-
-**SEE ALSO**
-
-- [Development using devspace](./DEVSPACE.md)
-- [Guideline for editing your content](./USAGEGUIDE.adoc)
+The virtual classroom environment is a ROLE classroom, which is shared by all image mode with Red Hat Device Edge quick courses and updated as required by future related courses: *HOL019: Image Mode with Red Hat Device Edge Quick Course Series*. This virtual classroom will be available to Red Hat employees and partners, and also customers with a Red Hat Learning Subscription.
