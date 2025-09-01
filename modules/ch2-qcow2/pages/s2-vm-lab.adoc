@@ -1,0 +1,20 @@
+:time_estimate: 5
+
+= Lab: Provision Virtual Edge Devices Using Cloud Images and Cloud-Init
+
+_Estimated reading time: *{time_estimate} minutes*._
+
+Objective::
+Create custom cloud images for virtual edge devices, by using bootc image builder, and perform day-1 configuration of those virtual devices using cloud-init.
+
+== Before you Begin
+
+Lorem ipsum
+
+== Instructions
+
+Lorem ipsum
+
+== What's next
+
+Lorem ipsum

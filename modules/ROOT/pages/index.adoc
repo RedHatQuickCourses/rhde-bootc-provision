@@ -24,7 +24,7 @@ On completing this course, you should be able to:
 
 * Provision Red Hat Device Edge systems, using image mode for RHEL, from bootable media.
 
-* Provision Red Hat Device Edge systems, using image mode for RHEL, from virtual disks using custom cloud images.
+* Provision Red Hat Device Edge systems, using image mode for RHEL, from virtual disks, by using custom cloud images.
 
 == Audience
 

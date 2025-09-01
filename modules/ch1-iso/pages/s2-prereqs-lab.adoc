@@ -1,0 +1,22 @@
+:time_estimate: 5
+
+= Lab: Prepare to Build and Deploy Bootc Container Images
+
+_Estimated reading time: *{time_estimate} minutes*._
+
+Objective::
+Prepare for air-gapped building of bootc container images and disconnected deployment of edge devices.
+
+WARNING: Not started yet
+
+== Before you Begin
+
+Lorem ipsum
+
+== Instructions
+
+Lorem ipsum
+
+== What's next
+
+Lorem ipsum

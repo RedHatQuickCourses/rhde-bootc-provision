@@ -1,0 +1,18 @@
+:time_estimate: 5
+
+= Provision Edge Devices Using Bootc Container Images
+
+_Estimated reading time: *{time_estimate} minutes*._
+
+Objective::
+Provision edge devices using bootc containers and a standard or customized RHEL installation media.
+
+WARNING: Not started yet
+
+== What is Red Hat Device Edge?
+
+Lorem ipsum
+
+== What's next
+
+Lorem ipsum

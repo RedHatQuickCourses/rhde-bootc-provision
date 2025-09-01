@@ -1,0 +1,18 @@
+:time_estimate: 5
+
+= Provision Virtual Edge Devices Using Cloud Images
+
+_Estimated reading time: *{time_estimate} minutes*._
+
+Objective::
+Create custom cloud images for virtual edge devices, by using bootc image builder, and perform day-1 configuration of those virtual devices using cloud-init.
+
+WARNING: Not started yet
+
+== What is Red Hat Device Edge?
+
+Lorem ipsum
+
+== What's next
+
+Lorem ipsum

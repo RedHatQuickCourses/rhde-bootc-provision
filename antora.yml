@@ -7,7 +7,5 @@ asciidoc:
 nav:
 - modules/ROOT/nav.adoc
 - modules/LABENV/nav.adoc
-- modules/chapter1/nav.adoc
-- modules/chapter2/nav.adoc
-- modules/chapter3/nav.adoc
-- modules/appendix/nav.adoc
+- modules/ch1-iso/nav.adoc
+- modules/ch2-qcow2/nav.adoc
