@@ -9,3 +9,11 @@ WARNING: Not started yet
 == Introduction
 
 Lorem ipsum
+
+== Interactive Assessment
+
+// provisory display of the assessment, before I refactor the book structure.
+
+++++
+<iframe type="text/javascript" src='_attachments/s2-assessment.html' style="width: 768px; height: 732px" allowfullscreen webkitallowfullscreen mozAllowFullScreen allow="autoplay *; fullscreen *; encrypted-media *" frameborder="0"></iframe>
+++++
