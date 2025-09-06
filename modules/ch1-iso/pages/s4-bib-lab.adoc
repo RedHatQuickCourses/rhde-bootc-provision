@@ -1,19 +1,231 @@
 :time_estimate: 5
 
-= Lab: Provision Edge Devices Using Custom Installion Media
+= Lab: Provision Edge Devices Using Custom Installation Media
 
 _Estimated reading time: *{time_estimate} minutes*._
 
 Objective::
 Provision edge devices in disconnected mode by using a customized RHEL installation media.
 
-WARNING: Not started yet
+WARNING: Work in progress
+
+== PROVISORY OUTLINE
+
+* Create a custom installation ISO using bootc image builder
+* Boot a VM from the custom ISO
+* This lab uses local VMs to emulate processes that you would perform on physical edge devices.
+* Podman modules to shorten the really long bib commands?
 
 == Before you Begin
 
-Lorem ipsum
+You need a _development machine_ running RHEL, to which you have unrestricted sudo access.
+
+These instructions were tested on RHEL 10.0 but should work with minimal or no changes on newer and older RHEL releases, since 9.6.
+
+If you are using the course classroom, log in on the `workstation` VM as the user `student` with password `student`.
+If not, please adapt the instructions to your test environment.
+
+Make sure you verified your test environment by following the xref:TBD[first lab] of this course.
 
 == Instructions
+
+You will use the bootc image builder utility to create a custom installation ISO which embeds a bootc container image, and then use that custom ISO as a virtual DVD disk to install RHEL in a new VM.
+
+1. Prepare to start this activity by checking that you have the outcomes from previous activities.
+
+.. If needed, create a local clone of the sample code repository of this course, but do NOT enter its directory.
+Stay on your home directory to start this lab.
++
+[source,subs="verbatim,quotes"]
+--
+$ *cd*
+$ *git clone https://github.com/RedHatQuickCourses/rhde-bootc-samples.git*
+Cloning into 'rhde-bootc-samples'...
+...
+--
+
+.. If needed, login to your private registry.
++
+[source,subs="verbatim,quotes"]
+--
+$ *podman login -u student -p redhat registry.lab.example.com:5000*
+Login Succeeded!
+--
+
+.. Verify that you have a bootc container image named `httpd-bootc:v1.0` in your private container registry.
+If you do not, please perform the xref:TBD[first lab], which builds and publishes that image.
++
+[source,subs="verbatim,quotes"]
+--
+$ *skopeo inspect --format '{{ json .RepoTags }}' docker://registry.lab.example.com:5000/httpd-bootc:v1.0*
+["v1.0"]
+--
+
+.. Verify that you have access to libvirt through its session interface.
+If you do not, please perform the preparation tasks from the xref:TBD[first lab].
++
+[source,subs="verbatim,quotes"]
+--
+$ *virsh list --all*
+ Id   Name   State
+--------------------
+
+--
++
+NOTE: It is fine if you have some local VMs on your system, as long as there isn't a VM named `bootc-iso`.
+
+2. Prepare scripts and configuration files you will use to automate creating and testing an installation ISO.
+
+.. Create a working directory and copy the sample files to it.
+Then make the temporary working directory your current directory.
++
+[source,subs="verbatim,quotes"]
+--
+$ *mkdir temp-test-iso*
+$ **cp rhde-bootc-samples/bib-iso/* temp-test-iso** 
+$ *cd temp-test-iso*
+--
+
+.. Review the example bootc image builder TOML file named `config.toml`.
++
+Its only content is an embedded Anaconda kickstart script.
++
+[source,subs="verbatim,quotes"]
+--
+include::1@samples:bib-iso:example$config.toml[]
+--
+
+.. Create an SSH key for use with your test VM and embed it in your TOML file.
++
+[source,subs="verbatim,quotes"]
+--
+$ *ssh-keygen -N '' -f edge-key -C 'initial key for edge devices'*
+Generating public/private rsa key pair.
+...
+$ *SSH_PUB_KEY=$( cat edge-key.pub )*
+$ *sed -i "s|REPLACE_WITH_SSH_PUB_KEY|$SSH_PUB_KEY|" config.toml*
+--
+
+.. Review the `bib-iso.sh` script which invokes the bootc image builder utility, and which takes the former file as input.
++
+Notice the following about the script:
++
+... TBD
++
+[source,subs="verbatim,quotes"]
+--
+include::1@samples:bib-iso:example$bib-iso.sh[]
+--
+
+.. Review the `virt-install.sh` script which creates a test VM.
++
+It is designed to be run in text mode, so you do not need to switch to a graphical console or remote desktop session just to view the test VM boot screens.
++
+REVIEW BULLETS!!!
++
+... User mode networking with the Passt provider and port-forwarding to enable network connections from your _development machine_ to services running inside the test VM.
+... Direct kernel loading (the `--location` option) to grab the Linux kernel and initial RAM disk from a remote HTTP server.
+... Injection of a custom kickstart file, so RHEL installation runs unattended.
+... A virtiofs device (the `--memorybacking` and `--filesystem` options) to enable access to an installation source without remote network servers but from local host files.
+... A serial console, so boot messages display in the current terminal, which could be an SSH session.
++
+[source,subs="verbatim,quotes"]
+--
+include::1@samples:bib-iso:example$virt-install.sh[]
+--
+
+3. Create a custom installation ISO.
+
+.. Log in again on your private registry, but this time as the root user.
++
+[source,subs="verbatim,quotes"]
+--
+$ *sudo podman login -u student -p redhat registry.lab.example.com:5000*
+Login Succeeded!
+--
+
+.. Download the bootc container image to the container storage of the root user.
++
+[source,subs="verbatim,quotes"]
+--
+$ *sudo podman pull registry.lab.example.com:5000/httpd-bootc:v1.0*
+GRAB OUTPUT
+--
+
+.. Create an output directory for the bootc image builder utility.
++
+[source,subs="verbatim,quotes"]
+--
+$ *mkdir output*
+--
+
+.. Invoke the script which runs the bootc image builder utility.
++
+Be patient, it takes several minutes running.
++
+[source,subs="verbatim,quotes"]
+--
+$ *bash bib-iso.sh*
+...
+Message: Results saved in .
+--
+
+.. Mount and inspect the generated iso, botice that there's an included ks which provides the ostreecontainer command and performs a bootc switch at the end of installation. Also grab the ISO disk label for direct kernbel loading.
+
+.. Copy the installable ISO from the bootc image builder output directory to a more permanent location, and give it an easily identifiable name.
+That file would be distributed to personel responsible for installing actual edge devices.
++
+[source,subs="verbatim,quotes"]
+--
+$ *cp output/bootiso/install.iso httpd-bootc.iso*
+--
+
+.. If you need to rebuild your installation ISO, for whatever reason, we recommend that you first clean your bootc image builder output directory.
++
+[source,subs="verbatim,quotes"]
+--
+$ **sudo rm -rf output/***
+--
+
+4. Install RHEL in a VM using the custom installation ISO.
+
+.. Invoke the script which creates a test VM from the ISO.
++
+After the installation is complete and the VM reboots, detattch from its virtual serial console using kbd:[Ctrl+C].
++
+[source,subs="verbatim,quotes"]
+--
+$ *bash virt-install.sh*
+GRAB OUTPUT
+--
+
+.. If something goes wrong and you have to retry creating your VM, first stop and delete it.
++
+WARNING: the `--remove-all-storage` option also deletes the copy of the installation ISO in your home directory.
++
+[source,subs="verbatim,quotes"]
+--
+$ *virsh destroy bootc-iso*
+Domain 'httpd-bootc' destroyed
+$ *virsh undefine bootc-iso --remove-all-storage*
+Domain 'httpd-bootc' has been undefined
+Volume 'vda'(/home/student/.local/share/libvirt/images/httpd-bootc.qcow2) removed.
+--
+
+.. [ Provide a GUI option, or show it as a video/arcade? For now, testing with a GUI variation of the script ]
+
+.. Add steps to inspect the ISO and find the label etc for direct kernel loading
+
+.. Use the SSH hey to access your test VM.
++
+[source,subs="verbatim,quotes"]
+--
+$ *ssh -i edge-key -p 8022 core@127.0.0.1*
+--
+
+.. May need to clean known hosts. SSH worked, but with password, not with KEY. :-(
+
+.. Run bootc status
 
 Lorem ipsum
 
