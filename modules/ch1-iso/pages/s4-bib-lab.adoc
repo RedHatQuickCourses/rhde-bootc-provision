@@ -19,6 +19,7 @@ WARNING: Work in progress
 == Before you Begin
 
 You need a _development machine_ running RHEL, to which you have unrestricted sudo access.
+The _development machine_ has access to mirrors of RHEL package repositories and bootc container images.
 
 These instructions were tested on RHEL 10.0 but should work with minimal or no changes on newer and older RHEL releases, since 9.6.
 
@@ -89,6 +90,7 @@ $ *cd temp-test-iso*
 .. Review the example bootc image builder TOML file named `config.toml`.
 +
 Its only content is an embedded Anaconda kickstart script.
+Notice that the kickstart script does NOT include an `ostreecontainer` command.
 +
 [source,subs="verbatim,quotes"]
 --
@@ -170,8 +172,6 @@ $ *bash bib-iso.sh*
 Message: Results saved in .
 --
 
-.. Mount and inspect the generated iso, botice that there's an included ks which provides the ostreecontainer command and performs a bootc switch at the end of installation. Also grab the ISO disk label for direct kernbel loading.
-
 .. Copy the installable ISO from the bootc image builder output directory to a more permanent location, and give it an easily identifiable name.
 That file would be distributed to personel responsible for installing actual edge devices.
 +
@@ -187,7 +187,96 @@ $ *cp output/bootiso/install.iso httpd-bootc.iso*
 $ **sudo rm -rf output/***
 --
 
-4. Install RHEL in a VM using the custom installation ISO.
+4. Inspect your custom ISO installer image, to confirm that it includes your kickstart file and your bootc container image.
+
+.. Mount the generated ISO image.
++
+[source,subs="verbatim,quotes"]
+--
+$ *mkdir temp-iso*
+$ *sudo mount -o loopack,ro httpd-bootc.iso tempiso*
+--
+
+.. Verify that there are two kickstart scripts inside the iso
++
+[source,subs="verbatim,quotes"]
+--
+$ **ls temp-iso/*ks**
+GRAB OUTPUT
+--
+
+.. Verify that your kickstart script contents are in the `osbuid.ks` file and it includes the `osbuild-base.ks` file.
++
+[source,subs="verbatim,quotes"]
+--
+$ *head -n 5 temp-iso/osbuild.ks*
+GRAB OUTPUT
+--
+
+.. Verify that the included `osbuild-base.ks` file provides the `ostreecontainer` command.
+It also provides a `%post` script that changes the bootc container image reference from the installation media to the reference given to bootc image builder. 
++
+[source,subs="verbatim,quotes"]
+--
+$ *head -n 5 temp-iso/osbuild-base.ks*
+GRAB OUTPUT
+--
+
+.. Umount the generated ISO image.
++
+[source,subs="verbatim,quotes"]
+--
+$ *sudo umount tempiso*
+--
+
+.. Grab the disk label of the generated ISO image.
+Notice it matches the kernel arguments on the `virt-install.sh` script.
++
+[source,subs="verbatim,quotes"]
+--
+$ *????*
+GRAB OUTPUT
+--
+
+5. To demonstrate that the custom installation media works in a disconnected environment, stop the private registry in the virtual labs environment.
+
+.. Open an SSH session to the `utility` VM.
+In the classroom environment, The `registry` host name is an alias to the `utility` server.
+The `student` user is pre-configured to passwordless SSH access and with `sudo` rights.
++
+[source,subs="verbatim,quotes"]
+--
+$ *ssh utility*
+--
+
+.. Alternatively, you can open a console to the `utility` VM and log in as the `student` user.
+
+.. Stop the `registry` service.
++
+[source,subs="verbatim,quotes"]
+--
+$ *sudo systemctl stop registry*
+GRAB OUTPUT
+--
+
+.. Close your SSH session and verify that your _development machine_ cannot access the private registry anymore.
++
+[source,subs="verbatim,quotes"]
+--
+$ *exit*
+--
+
+.. Verify that your _development machine_ cannot access the private registry anymore.
++
+[source,subs="verbatim,quotes"]
+--
+$ *podman search registry.lab.example.com:5000/*
+GRAB OUTPUT
+--
+
+6. Install RHEL in a VM using the custom installation ISO.
+
+.. To demonstrate that the installation works in a disconnected Open an SSH session to the `utility` VM and 
 
 .. Invoke the script which creates a test VM from the ISO.
 +
@@ -225,7 +314,11 @@ $ *ssh -i edge-key -p 8022 core@127.0.0.1*
 
 .. May need to clean known hosts. SSH worked, but with password, not with KEY. :-(
 
-.. Run bootc status
+.. Verify that the system is installed Run bootc status
+
+7. Verify that the test VM runs a web server with the mock web applicaiton files.
+
+.. TBD.
 
 Lorem ipsum
 
