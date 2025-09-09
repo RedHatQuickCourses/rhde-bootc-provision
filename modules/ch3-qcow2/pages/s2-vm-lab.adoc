@@ -284,24 +284,19 @@ $ *curl 127.0.0.1:8080*
 This would be the HTML and Javascrit code of your single-page web application.
 --
 
-6. Create a bootc contrainer image which cloud-init services.
+.. [ Can I set the hostname on the config.toml to avoid seeing "workstation" as the hostname of the test VM?]
+
+6. Create a bootc container image with cloud-init services.
+
+.. https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/10/html/configuring_and_managing_cloud-init_for_rhel/creating-a-virtual-machine-with-cloud-init
+
+.. Looks very convoluted, creating multiple files and bundling an ISO... it seems that virt-install can take the files directly, and create the ISO on the fly, which is easier.
+
+.. Got the cloud-init package (from my image) but not the hostname :-( The cloud-user user works with password and key... guess it's overriding the hostname? No, it was a typo in my command :-)
 
 .. TBD
 
-
 Lorem ipsum
-
-Previous lab should stop (virsh destroy) its VM, else portforward fails installation
-
-$ cp output/qcow2/disk.qcow2 httpd-bootc.qcow2
-
-$ ssh-keygen -R '[127.0.0.1]:8022'
-
-if it works, SSH to cloud-user
-
-didn't work with passwordless, but worked with password!? Accepted the core user and its password, maybe I put it in the image? Refused the cloud-user user, which should be the one from cloud-init... maybe I do have an user in the image, from a previous build, and didn't rebuild from the final containerfile? -- core user is in config.toml and I forgot to add a SSH key, so no cloud-init config happened, but I guess dhcp is installation default in RHEL :-)
-
-no hostname, needs more cloud-init
 
 == What's next
 
