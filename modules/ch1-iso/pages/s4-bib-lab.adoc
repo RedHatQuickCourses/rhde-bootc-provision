@@ -5,16 +5,9 @@
 _Estimated reading time: *{time_estimate} minutes*._
 
 Objective::
-Provision edge devices in disconnected mode by using a customized RHEL installation media.
+Provision edge devices in a disconnected environment by using a customized RHEL installation media.
 
 WARNING: Work in progress
-
-== PROVISORY OUTLINE
-
-* Create a custom installation ISO using bootc image builder
-* Boot a VM from the custom ISO
-* This lab uses local VMs to emulate processes that you would perform on physical edge devices.
-* Podman modules to shorten the really long bib commands?
 
 == Before you Begin
 
@@ -30,7 +23,7 @@ Make sure you verified your test environment by following the xref:TBD[first lab
 
 == Instructions
 
-You will use the bootc image builder utility to create a custom installation ISO which embeds a bootc container image, and then use that custom ISO as a virtual DVD disk to install RHEL in a new VM.
+You will use the bootc image builder utility to create a custom installation ISO, which embeds a bootc container image and a kickstart script for unattended installation, and use that custom ISO as a virtual DVD disk to install RHEL in a new VM.
 
 1. Prepare to start this activity by checking that you have the outcomes from previous activities.
 
@@ -90,7 +83,19 @@ $ *cd temp-test-iso*
 .. Review the example bootc image builder TOML file named `config.toml`.
 +
 Its only content is an embedded Anaconda kickstart script.
-Notice that the kickstart script does NOT include an `ostreecontainer` command.
+Notice that the kickstart script does NOT include an `ostreecontainer` command, but it configures the following:
++
+--
+... Locale, keyboard, and other system settings so the installation can proceed unatended.
++
+... A new partition table, with default automatic partitioning for RHEL.
++
+... Dynamic network configuaration, using DHCP.
++
+... A user named `core` with password `redhat123` and an SSH key.
++
+... The hostname `bootc-iso`, so you can easily distinguish a terminal in a _test VM_ from a terminal in your _development machine_.
+--
 +
 [source,subs="verbatim,quotes"]
 --
@@ -110,9 +115,21 @@ $ *sed -i "s|REPLACE_WITH_SSH_PUB_KEY|$SSH_PUB_KEY|" config.toml*
 
 .. Review the `bib-iso.sh` script which invokes the bootc image builder utility, and which takes the former file as input.
 +
-Notice the following about the script:
+Make sure you can distinguish between command-line options and arguments for Podman from command-line options and arguments for bootc image builder.
 +
-... TBD
+--
+... Podman runs from the `root` user and creates a privileged container, which has access to host namespaces.
++
+... Podman mounts the container storage of the root user, to where your bootc container image was already pulled.
++
+... Podman mounts the output folder and TOML file so bootc image builder has access to them.
++
+... Podman pulls bootc image builder from our private registry.
++
+... Bootc image builder creates an ISO image and uses a TOML file to pick its kickstart script.
++
+... Bootc image builder uses the `httpd-bootc:v1.0` container image, which was previously pulled.
+--
 +
 [source,subs="verbatim,quotes"]
 --
@@ -121,20 +138,23 @@ include::1@samples:bib-iso:example$bib-iso.sh[]
 
 .. Review the `virt-install.sh` script which creates a test VM.
 +
-It is designed to be run in text mode, so you do not need to switch to a graphical console or remote desktop session just to view the test VM boot screens.
+It is designed to be run in text mode, so you do not need to switch to a graphical console or remote desktop session just to view the test VM boot screens, by setting the following options:
 +
-REVIEW BULLETS!!!
-+
-... User mode networking with the Passt provider and port-forwarding to enable network connections from your _development machine_ to services running inside the test VM.
-... Direct kernel loading (the `--location` option) to grab the Linux kernel and initial RAM disk from a remote HTTP server.
-... Injection of a custom kickstart file, so RHEL installation runs unattended.
-... A virtiofs device (the `--memorybacking` and `--filesystem` options) to enable access to an installation source without remote network servers but from local host files.
+--
+... User mode networking with the Passt provider and port-forwarding to enable network connections from your _development machine_ to services running inside the _test VM_.
+... Direct kernel loading (the `--location` option) to grab the Linux kernel and initial RAM disk from your ISO image.
+... Kernel command-line arguments to use the kickstart file from your ISO image.
 ... A serial console, so boot messages display in the current terminal, which could be an SSH session.
+--
 +
 [source,subs="verbatim,quotes"]
 --
 include::1@samples:bib-iso:example$virt-install.sh[]
 --
++
+NOTE: Depending on the version of your bootc image builder image, you may be able to use `--location` without specifying the paths to the kernel and the initial RAM disk.
++
+//REF: https://issues.redhat.com/browse/HMS-6054
 
 3. Create a custom installation ISO.
 
@@ -151,7 +171,9 @@ Login Succeeded!
 [source,subs="verbatim,quotes"]
 --
 $ *sudo podman pull registry.lab.example.com:5000/httpd-bootc:v1.0*
-GRAB OUTPUT
+...
+Writing manifest to image destination
+...
 --
 
 .. Create an output directory for the bootc image builder utility.
@@ -194,7 +216,7 @@ $ **sudo rm -rf output/***
 [source,subs="verbatim,quotes"]
 --
 $ *mkdir temp-iso*
-$ *sudo mount -o loopack,ro httpd-bootc.iso tempiso*
+$ *sudo mount -o loop,ro httpd-bootc.iso temp-iso*
 --
 
 .. Verify that there are two kickstart scripts inside the iso
@@ -202,7 +224,7 @@ $ *sudo mount -o loopack,ro httpd-bootc.iso tempiso*
 [source,subs="verbatim,quotes"]
 --
 $ **ls temp-iso/*ks**
-GRAB OUTPUT
+temp-iso/osbuild-base.ks  temp-iso/osbuild.ks
 --
 
 .. Verify that your kickstart script contents are in the `osbuid.ks` file and it includes the `osbuild-base.ks` file.
@@ -210,7 +232,8 @@ GRAB OUTPUT
 [source,subs="verbatim,quotes"]
 --
 $ *head -n 5 temp-iso/osbuild.ks*
-GRAB OUTPUT
+%include /run/install/repo/osbuild-base.ks
+include::1@samples:bib-iso:example$config.toml[lines=2..5]
 --
 
 .. Verify that the included `osbuild-base.ks` file provides the `ostreecontainer` command.
@@ -218,29 +241,22 @@ It also provides a `%post` script that changes the bootc container image referen
 +
 [source,subs="verbatim,quotes"]
 --
-$ *head -n 5 temp-iso/osbuild-base.ks*
-GRAB OUTPUT
+$ *head -n 3 temp-iso/osbuild-base.ks*
+ostreecontainer --url=/run/install/repo/container --transport=oci
+%post --erroronfail
+bootc switch --mutate-in-place --transport registry registry.lab.example.com:5000/httpd-bootc:v1.0
 --
 
 .. Umount the generated ISO image.
 +
 [source,subs="verbatim,quotes"]
 --
-$ *sudo umount tempiso*
---
-
-.. Grab the disk label of the generated ISO image.
-Notice it matches the kernel arguments on the `virt-install.sh` script.
-+
-[source,subs="verbatim,quotes"]
---
-$ *????*
-GRAB OUTPUT
+$ *sudo umount temp-iso*
 --
 
 5. To demonstrate that the custom installation media works in a disconnected environment, stop the private registry in the virtual labs environment.
 
-.. Open an SSH session to the `utility` VM.
+.. On a new terminal, open an SSH session to the `utility` VM.
 In the classroom environment, The `registry` host name is an alias to the `utility` server.
 The `student` user is pre-configured to passwordless SSH access and with `sudo` rights.
 +
@@ -256,41 +272,53 @@ $ *ssh utility*
 [source,subs="verbatim,quotes"]
 --
 $ *sudo systemctl stop registry*
-GRAB OUTPUT
 --
 
-.. Close your SSH session and verify that your _development machine_ cannot access the private registry anymore.
-+
-[source,subs="verbatim,quotes"]
---
-$ *exit*
---
+.. Keep this terminal open and its SSH session, because you will return to it in the end of this activity.
+
+
+6. Install RHEL in a local VM, using the custom installation ISO, without acessing the container registry.
 
 .. Verify that your _development machine_ cannot access the private registry anymore.
 +
 [source,subs="verbatim,quotes"]
 --
 $ *podman search registry.lab.example.com:5000/*
-GRAB OUTPUT
+Error: 1 error occurred:
+        * couldn't search registry "registry.lab.example.com:5000": pinging container registry registry.lab.example.com:5000: Get "http://registry.lab.example.com:5000/v2/": dial tcp 172.25.250.220:5000: connect: connection refused
 --
 
-6. Install RHEL in a VM using the custom installation ISO.
+.. Set an environment variable with the disk label of your generated ISO image.
+It is required by the kernel arguments on the `virt-install.sh` script.
++
+[source,subs="verbatim,quotes"]
+--
+$ *iso-info httpd-bootc.iso | grep Volume*
+Volume      : RHEL-10-0-BaseOS-x86_64
+$ *export LABEL=RHEL-10-0-BaseOS-x86_64*
+--
 
-.. To demonstrate that the installation works in a disconnected Open an SSH session to the `utility` VM and 
-
-.. Invoke the script which creates a test VM from the ISO.
+.. Invoke the script which creates a _test VM_ from the ISO.
 +
 After the installation is complete and the VM reboots, detattch from its virtual serial console using kbd:[Ctrl+C].
 +
 [source,subs="verbatim,quotes"]
 --
 $ *bash virt-install.sh*
-GRAB OUTPUT
+...
+[  114.660806] reboot: Restarting system
+
+Domain creation completed.
+Restarting guest.
+Running text console command: virsh --connect qemu:///session console bootc-iso
+Connected to domain 'bootc-iso'
+Escape character is ^] (Ctrl + ])
 --
 
+.. Alternatively, you can use the `virt-install-gui.sh` script, which requires a Linux graphical desktop to display the VM console.
+This script boots the VM from the ISO file as a virtual CD-ROM drive, by using the `--cdrom` option instead of the `--location` option, so it uses the bootloader on the ISO image itself, like a physical device would do from physical media.
+
 .. If something goes wrong and you have to retry creating your VM, first stop and delete it.
-+
-WARNING: the `--remove-all-storage` option also deletes the copy of the installation ISO in your home directory.
 +
 [source,subs="verbatim,quotes"]
 --
@@ -301,27 +329,73 @@ Domain 'httpd-bootc' has been undefined
 Volume 'vda'(/home/student/.local/share/libvirt/images/httpd-bootc.qcow2) removed.
 --
 
-.. [ Provide a GUI option, or show it as a video/arcade? For now, testing with a GUI variation of the script ]
+7. Verify that the test VM runs a web server with the mock web application files.
 
-.. Add steps to inspect the ISO and find the label etc for direct kernel loading
-
-.. Use the SSH hey to access your test VM.
+.. Use the SSH hey to access your _test VM_.
 +
 [source,subs="verbatim,quotes"]
 --
 $ *ssh -i edge-key -p 8022 core@127.0.0.1*
+...
+[core@bootc-iso ~]$
 --
 
-.. May need to clean known hosts. SSH worked, but with password, not with KEY. :-(
+.. Verify that your _test VM_ was provisioned using image mode.
+The password for the `core` user is `redhat123`.
++
+[source,subs="verbatim,quotes"]
+--
+$ *sudo bootc status*
+● Booted image: registry.lab.example.com:5000/httpd-bootc:v1.0
+        Digest: sha256:068dc70b8eca43a0fa3c4a436d7098305898e5235c677f489b69ddc370885f6d
+       Version: 10.0 (2025-08-15 21:23:47.500494502 UTC)
+--
 
-.. Verify that the system is installed Run bootc status
+.. Verify that the Apache Web Server is active is your _test VM_ and .
++
+[source,subs="verbatim,quotes"]
+--
+$ *systemctl is-active httpd*
+active
+$ *curl 127.0.0.1*
+This would be the HTML and Javascrit code of your single-page web application.
+--
 
-7. Verify that the test VM runs a web server with the mock web applicaiton files.
+.. Terminate the SSH session to your _test VM_ and verify that the host can also access the mock web application, through  port-forwarding, similar to how SSH access works.
++
+[source,subs="verbatim,quotes"]
+--
+$ *exit*
+active
+$ *curl 127.0.0.1:8080*
+This would be the HTML and Javascrit code of your single-page web application.
+--
 
-.. TBD.
+8. Before continuing with this course, restart your private registry.
 
-Lorem ipsum
+.. Return to the terminal with an open SSH session to the `utility` machine.
+
+.. Start the `registry` service.
++
+[source,subs="verbatim,quotes"]
+--
+$ *sudo systemctl start registry*
+--
+
+.. You can now close your SSH session to the `utility` VM and verify that your _development machine_ can access the private registry again.
++
+[source,subs="verbatim,quotes"]
+--
+$ *exit*
+$ *podman search registry.lab.example.com:5000/*
+NAME                                                                  DESCRIPTION
+registry.lab.example.com:5000/httpd-bootc
+...
+--
+
+What you did with a VM here, you could do with a physical machine.
+You would use the https://github.com/FedoraQt/MediaWriter/releases[Fedora Media Writer] or a similar tool to write your custom ISO image to USB media, and use the BIOS screens of your machine to boot from USB media.
 
 == What's next
 
-Lorem ipsum
+The next chapter shows how to bootc image builder to build a cloud image and how to use cloud-init to perform day-1 customizations of virtual edge devices and edge cloud instances.
