@@ -7,13 +7,301 @@ _Estimated reading time: *{time_estimate} minutes*._
 Objective::
 Create custom cloud images for virtual edge devices, by using bootc image builder, and perform day-1 configuration of those virtual devices using cloud-init.
 
+== PROVISORY OUTLINE
+
+Provision edge VMs from remote container registries and custom cloud images
+
+* Create a ready-to-boot qcow2 image using bootc image builder
+
+* Include a guest-agent on the bootc image to highlight that the conversion to different formats won’t magically add cloud provider and hypervisor integration?
+
+* This lab uses local VMs to emulate processes that you would perform on cloud edge devices or edge hypervisors.
+
 == Before you Begin
 
-Lorem ipsum
+You need a _development machine_ running RHEL, to which you have unrestricted sudo access.
+The _development machine_ has access to mirrors of RHEL package repositories and bootc container images.
+
+These instructions were tested on RHEL 10.0 but should work with minimal or no changes on newer and older RHEL releases, since 9.6.
+
+If you are using the course classroom, log in on the `workstation` VM as the user `student` with password `student`.
+If not, please adapt the instructions to your test environment.
+
+Make sure you verified your test environment by following the xref:TBD[first lab] of this course.
 
 == Instructions
 
+1. Prepare to start this activity by checking that you have the outcomes from previous activities.
+
+.. If needed, create a local clone of the sample code repository of this course, but do NOT enter its directory.
+Stay on your home directory to start this lab.
++
+[source,subs="verbatim,quotes"]
+--
+$ *cd*
+$ *git clone https://github.com/RedHatQuickCourses/rhde-bootc-samples.git*
+Cloning into 'rhde-bootc-samples'...
+...
+--
+
+.. If needed, login to your private registry.
++
+[source,subs="verbatim,quotes"]
+--
+$ *podman login -u student -p redhat registry.lab.example.com:5000*
+Login Succeeded!
+--
+
+.. Verify that you have a bootc container image named `httpd-bootc:v1.0` in your private container registry.
+If you do not, please perform the xref:TBD[first lab], which builds and publishes that image.
++
+[source,subs="verbatim,quotes"]
+--
+$ *skopeo inspect --format '{{ json .RepoTags }}' docker://registry.lab.example.com:5000/httpd-bootc:v1.0*
+["v1.0"]
+--
+
+.. Verify that you have access to libvirt through its session interface.
+If you do not, please perform the preparation tasks from the xref:TBD[first lab].
++
+[source,subs="verbatim,quotes"]
+--
+$ *virsh list --all*
+ Id   Name   State
+--------------------
+
+--
++
+NOTE: It is fine if you have some local VMs on your system, as long as there isn't a VM named `bootc-iso`.
+
+2. Prepare scripts and configuration files you will use to automate creating and testing a VM image in the Qcow2 format.
+
+.. Create a working directory and copy the sample files to it.
+Then make the temporary working directory your current directory.
++
+[source,subs="verbatim,quotes"]
+--
+$ *mkdir temp-test-qcow2*
+$ **cp rhde-bootc-samples/bib-qcow2/* temp-test-qcow2** 
+$ *cd temp-test-qcow2*
+--
+
+.. Review the example bootc image builder TOML file named `config.toml`.
++
+TBD
++
+--
+... Comments on the config
+--
++
+[source,subs="verbatim,quotes"]
+--
+include::1@samples:bib-qcow2:example$config.toml[]
+--
+
+.. Create an SSH key for use with your _test VM_.
++
+[source,subs="verbatim,quotes"]
+--
+$ *ssh-keygen -N '' -f edge-key -C 'initial key for edge devices'*
+Generating public/private rsa key pair.
+...
+--
+
+.. Alternatively, you could just copy the SSH key files from the previous lab.
++
+[source,subs="verbatim,quotes"]
+--
+$ *cp ../temp-test-iso/edge-key* .*
+--
+
+.. Embed the SSH key it in your TOML file.
++
+[source,subs="verbatim,quotes"]
+--
+$ *SSH_PUB_KEY=$( cat edge-key.pub )*
+$ *sed -i "s|REPLACE_WITH_SSH_PUB_KEY|$SSH_PUB_KEY|" config.toml*
+--
+
+.. Review the `bib-qcow2.sh` script which invokes the bootc image builder utility, and which takes the former file as input.
++
+Make sure you can distinguish between command-line options and arguments for Podman from command-line options and arguments for bootc image builder.
++
+--
+... Comments on the options
+--
++
+[source,subs="verbatim,quotes"]
+--
+include::1@samples:bib-qcow2:example$bib-qcow2.sh[]
+--
+
+.. Review the `virt-install.sh` script which creates a test VM.
++
+It is designed to be run in text mode, so you do not need to switch to a graphical console or remote desktop session just to view the test VM boot screens, by setting the following options:
++
+--
+... Comments on the options
+--
++
+[source,subs="verbatim,quotes"]
+--
+include::1@samples:bib-qcow2:example$virt-install.sh[]
+--
+
+3. Create a custom VM image in Qcow format.
+
+.. Log in again on your private registry, but this time as the root user.
++
+[source,subs="verbatim,quotes"]
+--
+$ *sudo podman login -u student -p redhat registry.lab.example.com:5000*
+Login Succeeded!
+--
+
+.. Download the bootc container image to the container storage of the root user.
++
+[source,subs="verbatim,quotes"]
+--
+$ *sudo podman pull registry.lab.example.com:5000/httpd-bootc:v1.0*
+...
+Writing manifest to image destination
+...
+--
+
+.. Create an output directory for the bootc image builder utility.
++
+[source,subs="verbatim,quotes"]
+--
+$ *mkdir output*
+--
+
+.. Invoke the script which runs the bootc image builder utility.
++
+Be patient, it takes several minutes running.
++
+[source,subs="verbatim,quotes"]
+--
+$ *bash bib-qcow2.sh*
+...
+Message: Results saved in .
+--
+
+.. Copy the installable ISO from the bootc image builder output directory to a more permanent location, and give it an easily identifiable name.
+That file would be distributed to personel responsible for installing actual edge devices.
++
+[source,subs="verbatim,quotes"]
+--
+$ *cp output/qcow2/disk.qcow2 httpd-bootc.qcow2*
+--
+
+.. If you need to rebuild your installation ISO, for whatever reason, we recommend that you first clean your bootc image builder output directory.
++
+[source,subs="verbatim,quotes"]
+--
+$ **sudo rm -rf output/***
+--
+
+4. Create local VM, using the qcow2 image.
+
+.. Invoke the script which creates a _test VM_ from the qcow2 image.
++
+After the installation is complete and the VM reboots, detattch from its virtual serial console using kbd:[Ctrl+C].
++
+[source,subs="verbatim,quotes"]
+--
+$ *bash virt-install.sh*
+Starting install...
+Creating domain... 
+...
+Red Hat Enterprise Linux 10.0 (Coughlan)
+Kernel 6.12.0-55.24.1.el10_0.x86_64 on x86_64
+
+enp1s0: 172.25.250.9 fe80::87ba:fa4d:5761:7e8b
+workstation login:
+--
+
+.. If something goes wrong and you have to retry creating your VM, first stop and delete it.
++
+[source,subs="verbatim,quotes"]
+--
+$ *virsh destroy bootc-qcow2*
+Domain 'bootc-qcow2' destroyed
+$ *virsh undefine bootc-qcow2 --remove-all-storage*
+Domain 'bootc-qcow2' has been undefined
+Volume 'vda'(/home/student/.local/share/libvirt/images/bootc-qcow2.qcow2) removed.
+--
++
+WARNING: The `--remove-all-storage` deletes the Qcow2 file which boots the VM, so it is important to NOT use the copy in the `output` directory.
+
+5. Verify that the test VM runs a web server with the mock web application files.
+
+.. Use the SSH hey to access your _test VM_.
++
+If you performed the previous lab, you must first remove the existing key from your known hosts file.
++
+[source,subs="verbatim,quotes"]
+--
+$ *ssh-keygen -R '[127.0.0.1]:8022'*
+# Host [127.0.0.1]:8022 found: line 11
+/home/student/.ssh/known_hosts updated.
+Original contents retained as /home/student/.ssh/known_hosts.old
+$ *ssh -i edge-key -p 8022 core@127.0.0.1*
+...
+[core@workstation ~]$
+--
++
+EITHER FIX HOSTNAME OR WARN ABOUT IT
+
+.. Verify that your _test VM_ was provisioned using image mode.
+The password for the `core` user is `redhat123`.
++
+[source,subs="verbatim,quotes"]
+--
+$ *sudo bootc status*
+● Booted image: registry.lab.example.com:5000/httpd-bootc:v1.0
+        Digest: sha256:068dc70b8eca43a0fa3c4a436d7098305898e5235c677f489b69ddc370885f6d
+       Version: 10.0 (2025-08-15 21:23:47.500494502 UTC)
+--
+
+.. Verify that the Apache Web Server is active is your _test VM_ and .
++
+[source,subs="verbatim,quotes"]
+--
+$ *systemctl is-active httpd*
+active
+$ *curl 127.0.0.1*
+This would be the HTML and Javascrit code of your single-page web application.
+--
+
+.. Terminate the SSH session to your _test VM_ and verify that the host can also access the mock web application, through  port-forwarding, similar to how SSH access works.
++
+[source,subs="verbatim,quotes"]
+--
+$ *exit*
+active
+$ *curl 127.0.0.1:8080*
+This would be the HTML and Javascrit code of your single-page web application.
+--
+
+6. Create a bootc contrainer image which cloud-init services.
+
+.. TBD
+
+
 Lorem ipsum
+
+Previous lab should stop (virsh destroy) its VM, else portforward fails installation
+
+$ cp output/qcow2/disk.qcow2 httpd-bootc.qcow2
+
+$ ssh-keygen -R '[127.0.0.1]:8022'
+
+if it works, SSH to cloud-user
+
+didn't work with passwordless, but worked with password!? Accepted the core user and its password, maybe I put it in the image? Refused the cloud-user user, which should be the one from cloud-init... maybe I do have an user in the image, from a previous build, and didn't rebuild from the final containerfile? -- core user is in config.toml and I forgot to add a SSH key, so no cloud-init config happened, but I guess dhcp is installation default in RHEL :-)
+
+no hostname, needs more cloud-init
 
 == What's next
 

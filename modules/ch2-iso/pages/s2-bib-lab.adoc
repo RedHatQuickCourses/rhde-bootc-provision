@@ -323,10 +323,10 @@ This script boots the VM from the ISO file as a virtual CD-ROM drive, by using t
 [source,subs="verbatim,quotes"]
 --
 $ *virsh destroy bootc-iso*
-Domain 'httpd-bootc' destroyed
+Domain 'bootc-iso' destroyed
 $ *virsh undefine bootc-iso --remove-all-storage*
-Domain 'httpd-bootc' has been undefined
-Volume 'vda'(/home/student/.local/share/libvirt/images/httpd-bootc.qcow2) removed.
+Domain 'bootc-iso' has been undefined
+Volume 'vda'(/home/student/.local/share/libvirt/images/bootc-iso.qcow2) removed.
 --
 
 7. Verify that the test VM runs a web server with the mock web application files.
@@ -391,6 +391,14 @@ $ *podman search registry.lab.example.com:5000/*
 NAME                                                                  DESCRIPTION
 registry.lab.example.com:5000/httpd-bootc
 ...
+--
+
+9. Stop your _test VM_ to free local TCP ports for the next lab.
++
+[source,subs="verbatim,quotes"]
+--
+$ *virsh destroy bootc-iso*
+Domain 'bootc-iso' destroyed
 --
 
 What you did with a VM here, you could do with a physical machine.
