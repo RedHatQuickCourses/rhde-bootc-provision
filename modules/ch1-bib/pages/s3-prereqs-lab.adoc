@@ -5,7 +5,7 @@
 _Estimated reading time: *{time_estimate} minutes*._
 
 Objective::
-Prepare for air-gapped building of bootc container images and disconnected deployment of edge devices.
+Prepare for air-gapped building of bootc container images and deployment of disconnected edge devices.
 
 WARNING: Not started yet
 

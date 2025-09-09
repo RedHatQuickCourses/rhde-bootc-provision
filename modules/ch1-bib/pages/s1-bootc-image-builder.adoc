@@ -1,0 +1,22 @@
+:time_estimate: 5
+
+= Provision Edge Devices Using Bootc Container Images
+
+_Estimated reading time: *{time_estimate} minutes*._
+
+Objective::
+Undersand the process to provision edge devices using bootable disk or VM images created from bootc container images.
+
+WARNING: Not started yet
+
+== What are Red Hat Device Edge and image mdoe for RHEL?
+
+Lorem ipsum
+
+== What is bootc image builder?
+
+Lorem ipsum
+
+== What's next
+
+Lorem ipsum

@@ -1,0 +1,12 @@
+= Introduction to Bootc Image Builder with Red Hat Device Edge
+
+Goal::
+
+Understand the role of bootc image builder withing the overall process for building and deploying edge devices using image mode for RHEL.
+
+WARNING: Not started yet
+
+== Introduction
+
+Lorem ipsum
+

@@ -1,0 +1,12 @@
+= Build Custom RHEL Installation Media
+
+Goal::
+
+Provision Red Hat Device Edge systems, using image mode for RHEL, from bootable media.
+
+WARNING: Not started yet
+
+== Introduction
+
+Lorem ipsum
+

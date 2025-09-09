@@ -1,11 +1,11 @@
 :time_estimate: 5
 
-= Provision Edge Devices Using Bootc Container Images
+= Provision Edge Devices Using the RHEL Installer
 
 _Estimated reading time: *{time_estimate} minutes*._
 
 Objective::
-Provision edge devices using bootc containers and a standard or customized RHEL installation media.
+Provision edge devices using bootc containers and a customized RHEL installation media.
 
 WARNING: Not started yet
 

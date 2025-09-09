@@ -1,5 +1,0 @@
-* xref:index.adoc[]
-** xref:s1-bootc-image-builder.adoc[]
-** xref:s2-prereqs-lab.adoc[]
-** xref:s3-anaconda-lab.adoc[]
-** xref:s4-bib-lab.adoc[]
