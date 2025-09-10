@@ -1,4 +1,4 @@
-= Build Custom RHEL Installation Media
+= Build Custom RHEL Installation Media Using Image mode for RHEL
 
 Goal::
 

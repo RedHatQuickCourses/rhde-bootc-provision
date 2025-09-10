@@ -7,6 +7,8 @@ _Estimated reading time: *{time_estimate} minutes*._
 Objective::
 Create custom cloud images for virtual edge devices, by using bootc image builder, and perform day-1 configuration of those virtual devices using cloud-init.
 
+WARNING: Work in progress
+
 == Before you Begin
 
 You need a _development machine_ running RHEL, to which you have unrestricted sudo access.
@@ -147,7 +149,7 @@ Generating public/private rsa key pair.
 +
 [source,subs="verbatim,quotes"]
 --
-$ *cp ../temp-test-iso/edge-key* .*
+$ **cp ../temp-test-iso/edge-key* .**
 --
 
 .. Embed the SSH key it in your TOML file.
@@ -220,7 +222,7 @@ $ *cp output/qcow2/disk.qcow2 httpd-bootc.qcow2*
 $ **sudo rm -rf output/***
 --
 
-4. Create local VM, using the Qcow2 image.
+4. Create a local VM, using the Qcow2 image.
 
 .. Invoke the script which creates a _test VM_ from the qcow2 image.
 +
@@ -254,7 +256,7 @@ Volume 'vda'(/home/student/.local/share/libvirt/images/bootc-qcow2.qcow2) remove
 +
 WARNING: The `--remove-all-storage` deletes the Qcow2 file which boots the VM, so it is important to NOT use the copy in the `output` directory.
 
-5. Verify that the test VM runs a web server with the mock web application files, but was NOT customized by cloud-init.
+5. Verify that the test VM runs a web server with the mock web application files, but was NOT customized by cloud-init, and it is NOT running a guest agent either.
 
 .. Use the SSH key to access your _test VM_ as the `core` user, configured by bootc image builder.
 +
@@ -282,7 +284,7 @@ $ *sudo bootc status*
        Version: 10.0 (2025-08-15 21:23:47.500494502 UTC)
 --
 
-.. Verify that the Apache Web Server is active is your _test VM_ and .
+.. Verify that the Apache Web Server is active is your _test VM_ and it contains the files of the mock web application.
 +
 [source,subs="verbatim,quotes"]
 --
@@ -302,12 +304,21 @@ $ *rpm -q cloud-init*
 package cloud-init is not installed
 --
 
-.. Terminate the SSH session to your _test VM_ and verify that the host can also access the mock web application, through  port-forwarding, similar to how SSH access works.
+.. Verify that your _test VM_ does NOT have a QEMU guest agent either, and terminate its SSH session.
 +
 [source,subs="verbatim,quotes"]
 --
+$ *systemctl is-active qemu-guest-agent*
+inactive
+$ *rpm -q qemu-guest-agent*
+package qemu-guest-agent is not installed
 $ *exit*
-active
+--
+
+.. Verify that the host can access the mock web application, through  port-forwarding, similar to how SSH access works.
++
+[source,subs="verbatim,quotes"]
+--
 $ *curl 127.0.0.1:8080*
 This would be the HTML and Javascrit code of your single-page web application.
 --
@@ -330,7 +341,15 @@ cloud-user@127.0.0.1: Permission denied (publickey,gssapi-keyex,gssapi-with-mic,
 .. Using the `redhat456` password for the `cloud-user` user would not work either.
 The fact that you cannot log in as `cloud-user` and the hostname was not changed to `bootc-cloud-init` are signs that cloud-init was not running on your _test VM_
 
-6. Stop your _test VM_, so we can create a new one with supports cloud-init.
+.. Verify that your local hypervisor cannot get information about the operating system inside your _test VM_.
++
+[source,subs="verbatim,quotes"]
+--
+$ *virsh guestinfo bootc-qcow2*
+error: Guest agent is not responding: QEMU guest agent is not connected
+--
+
+6. Stop your _test VM_, so you can create a new one with supports cloud-init and the QEMU guest agent.
 +
 [source,subs="verbatim,quotes"]
 --
@@ -338,7 +357,7 @@ $ *virsh destroy bootc-qcow2*
 Domain 'bootc-qcow2' destroyed
 --
 
-7. Create a bootc container image with cloud-init services.
+7. Create a bootc container image with cloud-init and guest agent services.
 
 .. Copy the files and scripts you will use to build a new bootc container image and a new _test VM_, overwriting the files you already have on your `temp-test-qcow2` directory.
 +
@@ -349,7 +368,7 @@ $ **cp ../rhde-bootc-samples/bib-cloud-init/* .**
 
 .. Review the new containerfile.
 +
-It installs the `cloud-init` package and enable its Systemd unit, over the `httpd-bootc` bootc container image.
+It installs the `cloud-init` and `qemy-guest-agent` packages and enable their respective Systemd units, over the `httpd-bootc` bootc container image.
 This way, you get shorter image build and copy times.
 +
 [source,subs="verbatim,quotes"]
@@ -444,25 +463,38 @@ $ *ssh -i edge-key -p 8022 cloud-user@127.0.0.1*
 [cloud-user@bootc-cloud-init ~]$
 --
 
-.. Verify that this VM has an active cloud-init service.
+.. Verify that your _test VM_ has an active cloud-init and guest agent services, and terminate its SSH session.
 +
 [source,subs="verbatim,quotes"]
 --
 $ *systemctl is-active cloud-init*
 active
+$ *systemctl is-active qemu-guest-agent*
+active
+$ *exit*
 --
 
-.. Terminate the SSH session to your new _test VM_ and verify that the mock web application is available.
+.. Verify that the mock web application is available.
 +
 [source,subs="verbatim,quotes"]
 --
-$ *exit*
-active
 $ *curl 127.0.0.1:8080*
 This would be the HTML and Javascrit code of your single-page web application.
 --
 
-The strategy demonstrated here, of layering bootc container images to add services and settings specific to a cloud provier, over a more generic bootc container image, is just a suggestion.
+.. Verify that your hypervisor can now get information from the operating system inside your _test VM_.
++
+[source,subs="verbatim,quotes"]
+--
+$ *virsh guestinfo bootc-cloud-init*
+user.count          : 0
+os.id               : rhel
+os.name             : Red Hat Enterprise Linux
+os.pretty-name      : Red Hat Enterprise Linux 10.0 (Coughlan)
+...
+--
+
+The strategy demonstrated here, of layering bootc container images to add services and settings specific to a cloud provider over a more generic bootc container image, is just a suggestion.
 The opposite could also work: having generic parent bootc container images for different clouds and hypervisors, and adding your applications over them.
 
 == What's next
