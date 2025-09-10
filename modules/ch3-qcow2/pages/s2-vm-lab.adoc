@@ -7,16 +7,6 @@ _Estimated reading time: *{time_estimate} minutes*._
 Objective::
 Create custom cloud images for virtual edge devices, by using bootc image builder, and perform day-1 configuration of those virtual devices using cloud-init.
 
-== PROVISORY OUTLINE
-
-Provision edge VMs from remote container registries and custom cloud images
-
-* Create a ready-to-boot qcow2 image using bootc image builder
-
-* Include a guest-agent on the bootc image to highlight that the conversion to different formats won’t magically add cloud provider and hypervisor integration?
-
-* This lab uses local VMs to emulate processes that you would perform on cloud edge devices or edge hypervisors.
-
 == Before you Begin
 
 You need a _development machine_ running RHEL, to which you have unrestricted sudo access.
@@ -72,7 +62,7 @@ $ *virsh list --all*
 
 --
 +
-NOTE: It is fine if you have some local VMs on your system, as long as there isn't a VM named `bootc-iso`.
+NOTE: It is fine if you have some local VMs on your system, as long as there are no VMs named `bootc-qcow2` or `bootc-cloud-init`.
 
 2. Prepare scripts and configuration files you will use to automate creating and testing a VM image in the Qcow2 format.
 
@@ -88,15 +78,60 @@ $ *cd temp-test-qcow2*
 
 .. Review the example bootc image builder TOML file named `config.toml`.
 +
-TBD
-+
---
-... Comments on the config
---
+It creates an initial user, so we can access VMs created from it and perform on-boarding.
 +
 [source,subs="verbatim,quotes"]
 --
 include::1@samples:bib-qcow2:example$config.toml[]
+--
++
+NOTE: The TOML file provides no network customizations.
+You cannot perform them with bootc image builder, you must either use another day-1 customization technology, or have the network settings in your bootc container image.
+As it is, RHEL defaults to dynamic network configuration using DHCP, which is fine for the _test VM_ you will create.
+
+.. Review the cloud-init configuration file named `user-data`.
++
+It configures the default `cloud-init` user, and also sets a hostname.
++
+IMPORTANT: You do NOT need to provide day-1 customizations using both bootc image builder and cloud-init. Only one of them would suffice.
+We are doing both here to demonstrate that your bootc container image must include cloud-init, if you want to use it.
+If you only provide customizations using cloud-init, right now, it would fail and your _test VM_ would be inaccessible.
++
+[source,subs="verbatim,quotes"]
+--
+include::1@samples:bib-qcow2:example$user-data[]
+--
+
+.. Review the `bib-qcow2.sh` script which invokes the bootc image builder utility, and which takes the former file as input.
++
+Make sure you can distinguish between command-line options and arguments for Podman from command-line options and arguments for bootc image builder.
++
+--
+... Podman runs a privileged container, with access to the root user container storage, the TOML file, and the output directory, just like in the previous lab.
+
+... Boootc image builder generates a Qcow2 image from the `bootc-httpd:v1.0` bootc container image, using the TOML file to perform day-1 customizations on the Qcow2 image.
+--
++
+[source,subs="verbatim,quotes"]
+--
+include::1@samples:bib-qcow2:example$bib-qcow2.sh[]
+--
+
+.. Review the `virt-install.sh` script which creates a test VM.
++
+It is designed to be run in text mode, so you do not need to switch to a graphical console or remote desktop session just to view the test VM boot screens, by setting the following options:
++
+--
+... It creates a VM with 2 vCPUs, 4096 memory, and using the user mode networking stack, forwarding ports 8080 and 8022 to enable access to the Apache Web Server and the SSH server.
+
+... It uses an existing Qcow2 VM image (`--import`) instead of creating a new image and installing an operating system.
+
+... It also provides a cloud-init user data file (`--cloud-init`).
+--
++
+[source,subs="verbatim,quotes"]
+--
+include::1@samples:bib-qcow2:example$virt-install.sh[]
 --
 
 .. Create an SSH key for use with your _test VM_.
@@ -123,30 +158,11 @@ $ *SSH_PUB_KEY=$( cat edge-key.pub )*
 $ *sed -i "s|REPLACE_WITH_SSH_PUB_KEY|$SSH_PUB_KEY|" config.toml*
 --
 
-.. Review the `bib-qcow2.sh` script which invokes the bootc image builder utility, and which takes the former file as input.
-+
-Make sure you can distinguish between command-line options and arguments for Podman from command-line options and arguments for bootc image builder.
-+
---
-... Comments on the options
---
+.. Embed the SSH key it in your cloud-init user data file.
 +
 [source,subs="verbatim,quotes"]
 --
-include::1@samples:bib-qcow2:example$bib-qcow2.sh[]
---
-
-.. Review the `virt-install.sh` script which creates a test VM.
-+
-It is designed to be run in text mode, so you do not need to switch to a graphical console or remote desktop session just to view the test VM boot screens, by setting the following options:
-+
---
-... Comments on the options
---
-+
-[source,subs="verbatim,quotes"]
---
-include::1@samples:bib-qcow2:example$virt-install.sh[]
+$ *sed -i "s|REPLACE_WITH_SSH_PUB_KEY|$SSH_PUB_KEY|" user-data*
 --
 
 3. Create a custom VM image in Qcow format.
@@ -190,6 +206,8 @@ Message: Results saved in .
 .. Copy the installable ISO from the bootc image builder output directory to a more permanent location, and give it an easily identifiable name.
 That file would be distributed to personel responsible for installing actual edge devices.
 +
+Make sure the file name matches the one expected by the `virt-install.sh` script.
++
 [source,subs="verbatim,quotes"]
 --
 $ *cp output/qcow2/disk.qcow2 httpd-bootc.qcow2*
@@ -202,11 +220,11 @@ $ *cp output/qcow2/disk.qcow2 httpd-bootc.qcow2*
 $ **sudo rm -rf output/***
 --
 
-4. Create local VM, using the qcow2 image.
+4. Create local VM, using the Qcow2 image.
 
 .. Invoke the script which creates a _test VM_ from the qcow2 image.
 +
-After the installation is complete and the VM reboots, detattch from its virtual serial console using kbd:[Ctrl+C].
+After the installation is complete and the VM reboots, dettach from its virtual serial console using kbd:[Ctrl+C].
 +
 [source,subs="verbatim,quotes"]
 --
@@ -220,6 +238,8 @@ Kernel 6.12.0-55.24.1.el10_0.x86_64 on x86_64
 enp1s0: 172.25.250.9 fe80::87ba:fa4d:5761:7e8b
 workstation login:
 --
++
+NOTE: The hostname of your _test VM_ should be `workstation`, which is a sign that the cloud-init customizations were NOT performed.
 
 .. If something goes wrong and you have to retry creating your VM, first stop and delete it.
 +
@@ -234,9 +254,9 @@ Volume 'vda'(/home/student/.local/share/libvirt/images/bootc-qcow2.qcow2) remove
 +
 WARNING: The `--remove-all-storage` deletes the Qcow2 file which boots the VM, so it is important to NOT use the copy in the `output` directory.
 
-5. Verify that the test VM runs a web server with the mock web application files.
+5. Verify that the test VM runs a web server with the mock web application files, but was NOT customized by cloud-init.
 
-.. Use the SSH hey to access your _test VM_.
+.. Use the SSH key to access your _test VM_ as the `core` user, configured by bootc image builder.
 +
 If you performed the previous lab, you must first remove the existing key from your known hosts file.
 +
@@ -250,8 +270,6 @@ $ *ssh -i edge-key -p 8022 core@127.0.0.1*
 ...
 [core@workstation ~]$
 --
-+
-EITHER FIX HOSTNAME OR WARN ABOUT IT
 
 .. Verify that your _test VM_ was provisioned using image mode.
 The password for the `core` user is `redhat123`.
@@ -274,6 +292,16 @@ $ *curl 127.0.0.1*
 This would be the HTML and Javascrit code of your single-page web application.
 --
 
+.. Verify that this VM does NOT have cloud-init installed.
++
+[source,subs="verbatim,quotes"]
+--
+$ *systemctl is-active cloud-init*
+inactive
+$ *rpm -q cloud-init*
+package cloud-init is not installed
+--
+
 .. Terminate the SSH session to your _test VM_ and verify that the host can also access the mock web application, through  port-forwarding, similar to how SSH access works.
 +
 [source,subs="verbatim,quotes"]
@@ -284,20 +312,161 @@ $ *curl 127.0.0.1:8080*
 This would be the HTML and Javascrit code of your single-page web application.
 --
 
-.. [ Can I set the hostname on the config.toml to avoid seeing "workstation" as the hostname of the test VM?]
+.. Use the SSH key to access your _test VM_ as the `cloud-user` user, which should have been configured by cloud-init.
++
+If you performed the previous lab, you must first remove the existing key from your known hosts file.
++
+[source,subs="verbatim,quotes"]
+--
+$ *ssh -i edge-key -p 8022 cloud-user@127.0.0.1*
+cloud-user@127.0.0.1's password: 
+Permission denied, please try again.
+cloud-user@127.0.0.1's password: 
+Permission denied, please try again.
+cloud-user@127.0.0.1's password: 
+cloud-user@127.0.0.1: Permission denied (publickey,gssapi-keyex,gssapi-with-mic,password).
+--
 
-6. Create a bootc container image with cloud-init services.
+.. Using the `redhat456` password for the `cloud-user` user would not work either.
+The fact that you cannot log in as `cloud-user` and the hostname was not changed to `bootc-cloud-init` are signs that cloud-init was not running on your _test VM_
 
-.. https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/10/html/configuring_and_managing_cloud-init_for_rhel/creating-a-virtual-machine-with-cloud-init
+6. Stop your _test VM_, so we can create a new one with supports cloud-init.
++
+[source,subs="verbatim,quotes"]
+--
+$ *virsh destroy bootc-qcow2*
+Domain 'bootc-qcow2' destroyed
+--
 
-.. Looks very convoluted, creating multiple files and bundling an ISO... it seems that virt-install can take the files directly, and create the ISO on the fly, which is easier.
+7. Create a bootc container image with cloud-init services.
 
-.. Got the cloud-init package (from my image) but not the hostname :-( The cloud-user user works with password and key... guess it's overriding the hostname? No, it was a typo in my command :-)
+.. Copy the files and scripts you will use to build a new bootc container image and a new _test VM_, overwriting the files you already have on your `temp-test-qcow2` directory.
++
+[source,subs="verbatim,quotes"]
+--
+$ **cp ../rhde-bootc-samples/bib-cloud-init/* .**
+--
 
-.. TBD
+.. Review the new containerfile.
++
+It installs the `cloud-init` package and enable its Systemd unit, over the `httpd-bootc` bootc container image.
+This way, you get shorter image build and copy times.
++
+[source,subs="verbatim,quotes"]
+--
+include::1@samples:bib-cloud-init:example$Containerfile[]
+--
 
-Lorem ipsum
+.. Review the new `bib-qcow2.sh` script.
++
+It only changes the name of the bootc container image used by bootc image builder to `httpd-cloud-init:v1.0`.
++
+[source,subs="verbatim,quotes"]
+--
+include::1@samples:bib-cloud-init:example$bib-qcow2.sh[]
+--
+
+.. Review the new `virt-install.sh` script.
++
+It changes the name of the VM to `bootc-cloud-init` and of its VM image file to `httpd-cloud-init.qcow2`.
++
+[source,subs="verbatim,quotes"]
+--
+include::1@samples:bib-cloud-init:example$virt-install.sh[]
+--
+
+.. Build a new bootc container image and push it to the private registry.
++
+[source,subs="verbatim,quotes"]
+--
+$ *podman build -t httpd-cloud-init .*
+...
+Successfully tagged localhost/httpd-cloud-init:latest
+a2043f0dc07887ddf1b82ea0dfd45120f0b56c8c3b28914f4b34bb7b46633c30
+$ *skopeo copy containers-storage:localhost/httpd-cloud-init docker://registry.lab.example.com:5000/httpd-cloud-init:v1.0*
+...
+Writing manifest to image destination
+--
+
+8. Create a new _test VM_ using the new bootc container image.
+
+.. Download the new bootc container image to the root user and build a new qcow2 image from it.
++
+[source,subs="verbatim,quotes"]
+--
+$ *sudo podman pull registry.lab.example.com:5000/httpd-cloud-init:v1.0*
+...
+Writing manifest to image destination
+a2043f0dc07887ddf1b82ea0dfd45120f0b56c8c3b28914f4b34bb7b46633c30
+$ **sudo rm -rf output/***
+$ *bash bib-qcow2.sh*
+...
+Message: Results saved in .
+--
+
+.. Copy the new Qcow2 image to the file name expected by the `virt-install.sh` script.
++
+[source,subs="verbatim,quotes"]
+--
+$ *cp output/qcow2/disk.qcow2 httpd-cloud-init.qcow2*
+--
+
+.. Create a new _test VM_.
+When the VM finished boot, detach from its console using kdb:[Ctrl+C].
++
+[source,subs="verbatim,quotes"]
+--
+$ *bash virt-install.sh*
+...
+[  OK  ] Reached target cloud-init.target - Cloud-init target.
+
+Red Hat Enterprise Linux 10.0 (Coughlan)
+Kernel 6.12.0-55.24.1.el10_0.x86_64 on x86_64
+
+enp1s0: 172.25.250.9 fe80::5054:ff:fe8f:94b4
+bootc-cloud-init login: 
+--
++
+NOTE: You should see the hostname change in the VM's login prompt, as a sign that how it got customizations from cloud-init.
+
+9. Access your new _test VM_ using the initial user created by cloud-init.
+
+.. Remove the previous host key from your known hosts file and open an SSH connection, but using `cloud-user` instead of `core`.
++
+[source,subs="verbatim,quotes"]
+--
+$ *ssh-keygen -R '[127.0.0.1]:8022'*
+# Host [127.0.0.1]:8022 found: line 11
+/home/student/.ssh/known_hosts updated.
+Original contents retained as /home/student/.ssh/known_hosts.old
+$ *ssh -i edge-key -p 8022 cloud-user@127.0.0.1*
+...
+[cloud-user@bootc-cloud-init ~]$
+--
+
+.. Verify that this VM has an active cloud-init service.
++
+[source,subs="verbatim,quotes"]
+--
+$ *systemctl is-active cloud-init*
+active
+--
+
+.. Terminate the SSH session to your new _test VM_ and verify that the mock web application is available.
++
+[source,subs="verbatim,quotes"]
+--
+$ *exit*
+active
+$ *curl 127.0.0.1:8080*
+This would be the HTML and Javascrit code of your single-page web application.
+--
+
+The strategy demonstrated here, of layering bootc container images to add services and settings specific to a cloud provier, over a more generic bootc container image, is just a suggestion.
+The opposite could also work: having generic parent bootc container images for different clouds and hypervisors, and adding your applications over them.
 
 == What's next
 
-Lorem ipsum
+This is the final activity in this course.
+
+The next course teaches how to update edge systems provisioned using image mode for RHEL and how to troubleshoot common issues.
