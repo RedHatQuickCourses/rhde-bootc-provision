@@ -170,7 +170,7 @@
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-Not started yet
+Work in progress
 </td>
 </tr>
 </table>
@@ -178,10 +178,52 @@ Not started yet
 </div>
 </div>
 <div class="sect1">
-<h2 id="_what_are_red_hat_device_edge_and_image_mdoe_for_rhel"><a class="anchor" href="#_what_are_red_hat_device_edge_and_image_mdoe_for_rhel"></a>What are Red Hat Device Edge and image mdoe for RHEL?</h2>
+<h2 id="_what_are_red_hat_device_edge_and_image_mode_for_rhel"><a class="anchor" href="#_what_are_red_hat_device_edge_and_image_mode_for_rhel"></a>What are Red Hat Device Edge and image mode for RHEL?</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Lorem ipsum</p>
+<p>Red Hat Device Edge is a software and support subscription that bundles three components:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Red Hat Enterprise Linux (RHEL), which includes a feature set known as <strong>RHEL for edge</strong>.</p>
+</li>
+<li>
+<p>Red Hat build of MicroShift.</p>
+</li>
+<li>
+<p>Red Hat Ansible Automation Platform.</p>
+</li>
+</ol>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/s1-devices-fig-1.svg" alt="s1 devices fig 1">
+</div>
+<div class="title">Figure 1. Components of Red Hat Device Edge</div>
+</div>
+<div class="paragraph">
+<p>Red Hat Device Edge brings in a pricing and supportability scope that is more aligned with the characteristics of edge devices, as opposed to server-class machines.</p>
+</div>
+<div class="paragraph">
+<p>Red Hat Device Edge does NOT provide a different edition of RHEL, or a subset of RHEL.
+Many features of RHEL were developed to address the requirements of edge scenarios and are also proven valuable in data center scenarios.
+On the other hand, features from RHEL that were designed for data center scenarios are also valuable in edge scenarios.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_what_is_image_mode_for_rhel"><a class="anchor" href="#_what_is_image_mode_for_rhel"></a>What is image mode for RHEL?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><a href="https://www.redhat.com/en/technologies/linux-platforms/enterprise-linux-10/image-mode" target="_blank" rel="noopener">Image mode</a> for Red Hat Enterprise Linux enables you to manage your OS with the same tools and workflows as for application containers, creating a consistent experience and common language across development and infra-structure teams.</p>
+</div>
+<div class="paragraph">
+<p>Provisioning and updating RHEL systems by using image mode is faster and more reliable than with the traditional approach of dealing with RPM packages one at a time.
+The traditional approach is now called <em>package mode</em> for RHEL.</p>
+</div>
+<div class="paragraph">
+<p>It is also easier for operational technology (OT) professionals, who are typically NOT Linux sysadmins, to perform device provisioning and updates using image mode for RHEL on <em>far edge</em> sites than with package mode for RHEL.</p>
 </div>
 </div>
 </div>
@@ -189,7 +231,31 @@ Not started yet
 <h2 id="_what_is_bootc_image_builder"><a class="anchor" href="#_what_is_bootc_image_builder"></a>What is bootc image builder?</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Lorem ipsum</p>
+<p>Bootc image builder is a tool designed to create bootable disk images from bootc container images.
+It may be surprising to some, but bootc container images are NOT "bootable": no existing computer firmware, cloud provider, or hypervisor is capable of booting either physical or virtual system directly from bootc container images.</p>
+</div>
+<div class="paragraph">
+<p>To effectively use a boot container image as a system image, to provision edge devices or any other kind of system running image mode for RHEL, there are three options:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Use the standard RHEL installer (Anaconda) with a custom kickstart script that configures an installation source in an OCI container registry.</p>
+</li>
+<li>
+<p>Use the bootc utility to ovewrite an existing RHEL installation with a bootc container image.</p>
+</li>
+<li>
+<p>Use the bootc image builder utility to create either a custom RHEL disk image in a format that your physical or virtual system can take as its system disk (also known as boot disk or root disk).</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>The first two alternatives were used in the previous course as approaches for system testing, in a developer inner loop.
+They are easy to automate with current developer tools and continuous integration systems (CI) but they are cumbersome to apply to production systems, at scale, and are not very user friendly for professionals who are not developers nor Linux system administrators.</p>
+</div>
+<div class="paragraph">
+<p>This course focuses on the third alternative, which is the recommended one for provisioning production systems, and you will see do not require a deep Linux skills.</p>
 </div>
 </div>
 </div>
@@ -197,7 +263,13 @@ Not started yet
 <h2 id="_whats_next"><a class="anchor" href="#_whats_next"></a>What&#8217;s next</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Lorem ipsum</p>
+<p>The following quiz provides an opportunity to assess your knowledge about bootc container images and image mode for RHEL.</p>
+</div>
+<div class="paragraph">
+<p>You should be able to complete and learn skills from this course, even if you do no pass the quiz and do not have sufficient knowledge to build your own bootc container images.</p>
+</div>
+<div class="paragraph">
+<p>It is recommended that the core team which builds and supports image mode for an organization possess skills of the complete lifecycle from building to provisioning and updating image mode systems.</p>
 </div>
 </div>
 </div>
