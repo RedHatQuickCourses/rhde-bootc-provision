@@ -332,9 +332,12 @@ Volume 'vda'(/home/student/.local/share/libvirt/images/bootc-iso.qcow2) removed.
 7. Verify that the test VM runs a web server with the mock web application files.
 
 .. Use the SSH hey to access your _test VM_.
+If you are using the same classroom from previous courses, first remove any host key from your known hosts file.
 +
 [source,subs="verbatim,quotes"]
 --
+$ *ssh-keygen -R '[127.0.0.1]:8022'*
+...
 $ *ssh -i edge-key -p 8022 core@127.0.0.1*
 ...
 [core@bootc-iso ~]$
@@ -358,17 +361,22 @@ $ *sudo bootc status*
 $ *systemctl is-active httpd*
 active
 $ *curl 127.0.0.1*
-This would be the HTML and Javascrit code of your single-page web application.
+Misc tests of bootc images and firewalld.
 --
 
-.. Terminate the SSH session to your _test VM_ and verify that the host can also access the mock web application, through  port-forwarding, similar to how SSH access works.
+.. Terminate the SSH session to your _test VM_.
 +
 [source,subs="verbatim,quotes"]
 --
 $ *exit*
-active
+--
+
+.. Verify that the host can also access the mock web application, through  port-forwarding, similar to how SSH access works.
++
+[source,subs="verbatim,quotes"]
+--
 $ *curl 127.0.0.1:8080*
-This would be the HTML and Javascrit code of your single-page web application.
+Misc tests of bootc images and firewalld.
 --
 
 8. Before continuing with this course, restart your private registry.

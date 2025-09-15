@@ -1,4 +1,4 @@
-:time_estimate: 5
+:time_estimate: 6
 
 = Lab: Prepare to Build and Deploy Bootc Container Images
 
@@ -8,10 +8,6 @@ Objective::
 Prepare for air-gapped building of bootc container images and deployment of disconnected edge devices.
 
 WARNING: Work in progress
-
-:time_estimate: 6
-
-MAKE SURE IF FLOWS FROM THE FIRST COURSE!!!
 
 == Before you Begin
 
@@ -26,7 +22,7 @@ If not, please adapt the instructions to your test environment.
 == Instructions
 
 You will verify that you have access to mirrors of RHEL package repositories and bootc container images from RHEL. 
-You will also configure your _development machine_ with RHEL virtualization tools, based on libvirt, to perform system testing of your bootc container images.
+You will also configure your _development machine_ with RHEL virtualization tools, based on libvirt, to use local VMs to stand in for physical edge devices.
 
 If you are reusing the same classrom environment of the https://redhatquickcourses.github.io/rhde-bootc-build/[previous course^] in the image mode with Red Hat Device Edge quick course series, you should have everything ready and will skip most steps here.
 
@@ -50,7 +46,7 @@ Instead they should point to a machine inside your virtual labs environment.
 [source,subs="verbatim,quotes"]
 --
 $ *dnf repoinfo rhel-10.0-for-x86_64-baseos-rpms | grep baseurl*
-Last metadata expiration check: 0:01:12 ago on Thu Aug  7 12:48:44 2025.
+...
 Repo-baseurl       : http://content.example.com/rhel10.0/x86_64/dvd/BaseOS
 --
 
@@ -177,7 +173,7 @@ NOTE: Do not forget the last argument to the `podman build` command, which is a 
 +
 [source,subs="verbatim,quotes"]
 --
-$ *skopeo copy container-storage:localhost/httpd-system:latest docker://registry.lab.example.com:5000/httpd-system:v1.0*
+$ *skopeo copy containers-storage:localhost/httpd-system docker://registry.lab.example.com:5000/httpd-system:v1.0*
 ...
 Copying config 8f58cf789c done   | 
 Writing manifest to image destination

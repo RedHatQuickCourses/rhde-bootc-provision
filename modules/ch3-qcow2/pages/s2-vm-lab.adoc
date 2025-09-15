@@ -73,6 +73,7 @@ Then make the temporary working directory your current directory.
 +
 [source,subs="verbatim,quotes"]
 --
+$ *cd*
 $ *mkdir temp-test-qcow2*
 $ **cp rhde-bootc-samples/bib-qcow2/* temp-test-qcow2** 
 $ *cd temp-test-qcow2*
@@ -291,7 +292,7 @@ $ *sudo bootc status*
 $ *systemctl is-active httpd*
 active
 $ *curl 127.0.0.1*
-This would be the HTML and Javascrit code of your single-page web application.
+Misc tests of bootc images and firewalld
 --
 
 .. Verify that this VM does NOT have cloud-init installed.
@@ -320,7 +321,7 @@ $ *exit*
 [source,subs="verbatim,quotes"]
 --
 $ *curl 127.0.0.1:8080*
-This would be the HTML and Javascrit code of your single-page web application.
+Misc tests of bootc images and firewalld
 --
 
 .. Use the SSH key to access your _test VM_ as the `cloud-user` user, which should have been configured by cloud-init.
@@ -479,7 +480,7 @@ $ *exit*
 [source,subs="verbatim,quotes"]
 --
 $ *curl 127.0.0.1:8080*
-This would be the HTML and Javascrit code of your single-page web application.
+Misc tests of bootc images and firewalld
 --
 
 .. Verify that your hypervisor can now get information from the operating system inside your _test VM_.
