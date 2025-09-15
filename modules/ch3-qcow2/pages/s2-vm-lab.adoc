@@ -44,12 +44,12 @@ $ *podman login -u student -p redhat registry.lab.example.com:5000*
 Login Succeeded!
 --
 
-.. Verify that you have a bootc container image named `httpd-bootc:v1.0` in your private container registry.
+.. Verify that you have a bootc container image named `httpd-system:v1.0` in your private container registry.
 If you do not, please perform the xref:TBD[first lab], which builds and publishes that image.
 +
 [source,subs="verbatim,quotes"]
 --
-$ *skopeo inspect --format '{{ json .RepoTags }}' docker://registry.lab.example.com:5000/httpd-bootc:v1.0*
+$ *skopeo inspect --format '{{ json .RepoTags }}' docker://registry.lab.example.com:5000/httpd-system:v1.0*
 ["v1.0"]
 --
 
@@ -181,7 +181,7 @@ Login Succeeded!
 +
 [source,subs="verbatim,quotes"]
 --
-$ *sudo podman pull registry.lab.example.com:5000/httpd-bootc:v1.0*
+$ *sudo podman pull registry.lab.example.com:5000/httpd-system:v1.0*
 ...
 Writing manifest to image destination
 ...
@@ -212,7 +212,7 @@ Make sure the file name matches the one expected by the `virt-install.sh` script
 +
 [source,subs="verbatim,quotes"]
 --
-$ *cp output/qcow2/disk.qcow2 httpd-bootc.qcow2*
+$ *cp output/qcow2/disk.qcow2 httpd-system.qcow2*
 --
 
 .. If you need to rebuild your installation ISO, for whatever reason, we recommend that you first clean your bootc image builder output directory.
@@ -279,7 +279,7 @@ The password for the `core` user is `redhat123`.
 [source,subs="verbatim,quotes"]
 --
 $ *sudo bootc status*
-● Booted image: registry.lab.example.com:5000/httpd-bootc:v1.0
+● Booted image: registry.lab.example.com:5000/httpd-system:v1.0
         Digest: sha256:068dc70b8eca43a0fa3c4a436d7098305898e5235c677f489b69ddc370885f6d
        Version: 10.0 (2025-08-15 21:23:47.500494502 UTC)
 --
@@ -368,7 +368,7 @@ $ **cp ../rhde-bootc-samples/bib-cloud-init/* .**
 
 .. Review the new containerfile.
 +
-It installs the `cloud-init` and `qemy-guest-agent` packages and enable their respective Systemd units, over the `httpd-bootc` bootc container image.
+It installs the `cloud-init` and `qemy-guest-agent` packages and enable their respective Systemd units, over the `httpd-system` bootc container image.
 This way, you get shorter image build and copy times.
 +
 [source,subs="verbatim,quotes"]
@@ -446,11 +446,11 @@ enp1s0: 172.25.250.9 fe80::5054:ff:fe8f:94b4
 bootc-cloud-init login: 
 --
 +
-NOTE: You should see the hostname change in the VM's login prompt, as a sign that how it got customizations from cloud-init.
+NOTE: You should see the hostname change in the VM's login prompt, as a sign that, this time, it got customizations from cloud-init.
 
 9. Access your new _test VM_ using the initial user created by cloud-init.
 
-.. Remove the previous host key from your known hosts file and open an SSH connection, but using `cloud-user` instead of `core`.
+.. Remove the previous host key from your known hosts file and open an SSH connection, but using the `cloud-user` user instead of the `core` user.
 +
 [source,subs="verbatim,quotes"]
 --
@@ -463,7 +463,7 @@ $ *ssh -i edge-key -p 8022 cloud-user@127.0.0.1*
 [cloud-user@bootc-cloud-init ~]$
 --
 
-.. Verify that your _test VM_ has an active cloud-init and guest agent services, and terminate its SSH session.
+.. Verify that your _test VM_ has active cloud-init and guest agent services, and terminate its SSH session.
 +
 [source,subs="verbatim,quotes"]
 --

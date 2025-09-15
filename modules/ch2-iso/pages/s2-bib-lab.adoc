@@ -46,12 +46,12 @@ $ *podman login -u student -p redhat registry.lab.example.com:5000*
 Login Succeeded!
 --
 
-.. Verify that you have a bootc container image named `httpd-bootc:v1.0` in your private container registry.
+.. Verify that you have a bootc container image named `httpd-system:v1.0` in your private container registry.
 If you do not, please perform the xref:TBD[first lab], which builds and publishes that image.
 +
 [source,subs="verbatim,quotes"]
 --
-$ *skopeo inspect --format '{{ json .RepoTags }}' docker://registry.lab.example.com:5000/httpd-bootc:v1.0*
+$ *skopeo inspect --format '{{ json .RepoTags }}' docker://registry.lab.example.com:5000/httpd-system:v1.0*
 ["v1.0"]
 --
 
@@ -128,7 +128,7 @@ Make sure you can distinguish between command-line options and arguments for Pod
 +
 ... Bootc image builder creates an ISO image and uses a TOML file to pick its kickstart script.
 +
-... Bootc image builder uses the `httpd-bootc:v1.0` container image, which was previously pulled.
+... Bootc image builder uses the `httpd-system:v1.0` container image, which was previously pulled.
 --
 +
 [source,subs="verbatim,quotes"]
@@ -170,7 +170,7 @@ Login Succeeded!
 +
 [source,subs="verbatim,quotes"]
 --
-$ *sudo podman pull registry.lab.example.com:5000/httpd-bootc:v1.0*
+$ *sudo podman pull registry.lab.example.com:5000/httpd-system:v1.0*
 ...
 Writing manifest to image destination
 ...
@@ -199,7 +199,7 @@ That file would be distributed to personel responsible for installing actual edg
 +
 [source,subs="verbatim,quotes"]
 --
-$ *cp output/bootiso/install.iso httpd-bootc.iso*
+$ *cp output/bootiso/install.iso httpd-system.iso*
 --
 
 .. If you need to rebuild your installation ISO, for whatever reason, we recommend that you first clean your bootc image builder output directory.
@@ -216,7 +216,7 @@ $ **sudo rm -rf output/***
 [source,subs="verbatim,quotes"]
 --
 $ *mkdir temp-iso*
-$ *sudo mount -o loop,ro httpd-bootc.iso temp-iso*
+$ *sudo mount -o loop,ro httpd-system.iso temp-iso*
 --
 
 .. Verify that there are two kickstart scripts inside the iso
@@ -244,7 +244,7 @@ It also provides a `%post` script that changes the bootc container image referen
 $ *head -n 3 temp-iso/osbuild-base.ks*
 ostreecontainer --url=/run/install/repo/container --transport=oci
 %post --erroronfail
-bootc switch --mutate-in-place --transport registry registry.lab.example.com:5000/httpd-bootc:v1.0
+bootc switch --mutate-in-place --transport registry registry.lab.example.com:5000/httpd-system:v1.0
 --
 
 .. Umount the generated ISO image.
@@ -293,7 +293,7 @@ It is required by the kernel arguments on the `virt-install.sh` script.
 +
 [source,subs="verbatim,quotes"]
 --
-$ *iso-info httpd-bootc.iso | grep Volume*
+$ *iso-info httpd-system.iso | grep Volume*
 Volume      : RHEL-10-0-BaseOS-x86_64
 $ *export LABEL=RHEL-10-0-BaseOS-x86_64*
 --
@@ -346,7 +346,7 @@ The password for the `core` user is `redhat123`.
 [source,subs="verbatim,quotes"]
 --
 $ *sudo bootc status*
-● Booted image: registry.lab.example.com:5000/httpd-bootc:v1.0
+● Booted image: registry.lab.example.com:5000/httpd-system:v1.0
         Digest: sha256:068dc70b8eca43a0fa3c4a436d7098305898e5235c677f489b69ddc370885f6d
        Version: 10.0 (2025-08-15 21:23:47.500494502 UTC)
 --
@@ -389,7 +389,7 @@ $ *sudo systemctl start registry*
 $ *exit*
 $ *podman search registry.lab.example.com:5000/*
 NAME                                                                  DESCRIPTION
-registry.lab.example.com:5000/httpd-bootc
+registry.lab.example.com:5000/httpd-system
 ...
 --
 
