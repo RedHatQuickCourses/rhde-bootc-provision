@@ -4,9 +4,16 @@ Goal::
 
 Understand the role of bootc image builder withing the overall process for building and deploying edge devices using image mode for RHEL.
 
-WARNING: Not started yet
+WARNING: Work in progress
 
 == Introduction
 
 Lorem ipsum
 
+////
+== Experiment: Interactive Diagram
+
+++++
+<iframe type="text/javascript" src='_attachments/s1-diagram.html' style="width: 768px; height: 732px" allowfullscreen webkitallowfullscreen mozAllowFullScreen allow="autoplay *; fullscreen *; encrypted-media *" frameborder="0"></iframe>
+++++
+////
