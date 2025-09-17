@@ -7,9 +7,149 @@ _Estimated reading time: *{time_estimate} minutes*._
 Objective::
 Provision edge devices using bootc containers and a customized RHEL installation media.
 
-WARNING: Not started yet
+WARNING: Work in progress
 
-== What is Red Hat Device Edge?
+== Using bootc image builder
+
+After you build a bootc container image and publish it in an OCI container registry, you can use bootc image builder to create different kinds of bootable disk images embedding the bootc container image.
+
+image::s1-bib-iso-fig-1.svg["Workflow from building bootc container images to provisioning edge devices, with highlight on the usage of bootc image builder."]
+
+Bootc image builder takes tree inputs:
+
+* The name of a bootc container image, which was already downloaded (pulled) into the local containers storage.
+
+* A configuration file in the TOML format, which defines customizations to be applied to the bootable disk image.
+
+* An output directory, where it saves the bootable disk image and a number of temporary files.
+
+Bootc image builder is provided as an application container image, which you MUST run as a privileged container.
+That means it is not very friendly to developer workflows, especially in organizations which restrict privileges of developers on their own work machines and continuous integration (CI) servers.
+Bootc image builder is positioned as a system administrator tool.
+
+This is a typical Podman command to run booc image builder.
+First, we focus on the arguments to Podman itself.
+
+[source,subs="verbatim,quotes"]
+--
+$ sudo podman run --rm -it \ <1>
+    --privileged --security-opt label=type:unconfined_t \ <2>
+    -v /var/lib/containers/storage:/var/lib/containers/storage \ <3>
+    -v $(pwd)/config.toml:/config.toml \ <3>
+    -v $(pwd)/output:/output \ <5>
+    registry.redhat.io/rhel10/bootc-image-builder \ <6>
+    _command line options for bootc image builder_ \
+    _command line arguments for bootc image builder_ \
+--
+<1> Run an interactive container, and remove the container when it ternminates.
+<2> Run a privileged container, with an unconfined SELinux context.
+<3> Mount the system containers storage, which is the one for the root user.
+<4> Mount the TOML configuration file for bootc image builder.
+<5> Mount the output directory.
+<6> Name of the bootc image builder application container.
+
+To download (pull) the bootc image builder application container from Red Hat, you need a valid Red Hat customer portal account, which can be a free Red Hat Developer account.
+
+NOTE: You do NOT need to run bootc image builder from the Red Hat registry.
+You can copy it to a private registry inside your organization's network, and run it from there.
+
+Now we focus on the arguments to bootc image builder:
+
+[source,subs="verbatim,quotes"]
+--
+$ sudo podman run _command line options for podman_ \
+    registry.redhat.io/rhel10/bootc-image-builder \
+    --type iso \ <1>
+    --config /config.toml \ <2>
+    registry.example.com/mybootc:tag <3>
+--
+<1> Type of disk image to generate, in this case an ISO installation media for RHEL.
+<2> Name of the TOML configuration file, which must match the name used in the `-v` option for Podman.
+<3> Name of the bootc container container image to embed in the disk image.
+
+The bootc container image must be previously downloaded to the system containers storage, that is, you must run:
+
+[source,subs="verbatim,quotes"]
+--
+$ sudo podman pull registry.example.com/mybootc:tag
+--
+
+Before attempting to run booc image builder.
+
+Because you do not install bootc image builder from an RPM package, you will not find man pages for it.
+Fortunately, its application container accepts the usual `--help` command line option.
+
+[source,subs="verbatim,quotes"]
+--
+$ sudo podman run --rm \
+    registry.redhat.io/rhel10/bootc-image-builder \
+    --help
+
+Create a bootable image from an ostree native container
+
+Usage:
+  bootc-image-builder [command]
+
+Available Commands:
+  build       Create a bootable image from an ostree native container (default command)
+  completion  Generate the autocompletion script for the specified shell
+  help        Help about any command
+  manifest    Only create the manifest but don't build the image.
+  version     Show the version and quit
+
+Flags:
+  -h, --help               help for bootc-image-builder
+      --log-level string   logging level (debug, info, error); default error
+  -v, --verbose            Switch to verbose mode
+      --version            version for bootc-image-builder
+
+Use "bootc-image-builder [command] --help" for more information about a command.
+--
+
+Most of the time you will use the default `build` command from bootc image builder, and you can get help for that command as:
+
+[source,subs="verbatim,quotes"]
+--
+$ sudo podman run --rm \
+  registry.redhat.io/rhel10/bootc-image-builder \
+  build --help
+
+Create a bootable image from an ostree native container
+(default action if no command is given)
+IMAGE_NAME: container image to build into a bootable image
+
+Usage:
+  bootc-image-builder build IMAGE_NAME
+
+Examples:
+bootc-image-builder build quay.io/centos-bootc/centos-bootc:stream9
+bootc-image-builder quay.io/centos-bootc/centos-bootc:stream9
+
+
+Flags:
+      --aws-ami-name string      name for the AMI in AWS (only for type=ami)
+      --aws-bucket string        target S3 bucket name for intermediate storage when creating AMI (only for type=ami)
+      --aws-region string        target region for AWS uploads (only for type=ami)
+...
+--
+
+Of course, you do not need to get help for bootc image builder as root, but there is no point downloading the bootc image builder application container to the containers storage of your regular, unprivileged Linux user because the `build` command requires a privileged container, which must be started as root.
+
+== Customizations for ISO disk images
+
+The `config.toml` given to bootc image builder contains a number of customizations to be applied to while generating a bootable disk image. 
+The set of valid customizations varies with the kind of disk images, and in the case of an ISO image, the only valid customizations is a kickstart script for Anaconda, the standard RHEL installation program.
+
+You do not need to provide a complete kickstart script.
+If you do not, Anaconda displays interactive screens for disk partitioning, local selection, etc.
+
+You CANNOT include an `ostreecontainer` command on your kickstart file, because bootc image builder will append its own kickstart file with the location of the bootc container image embedded in the ISO disk image.
+
+Lorem ipsum
+
+standard RHEL media vs custom RHEL media
+
+Review day-1, day-2, and onboarding?
 
 Lorem ipsum
 
