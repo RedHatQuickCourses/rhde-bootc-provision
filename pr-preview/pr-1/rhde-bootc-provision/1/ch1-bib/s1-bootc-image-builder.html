@@ -159,7 +159,7 @@
 <dl>
 <dt class="hdlist1">Objective</dt>
 <dd>
-<p>Undersand the process to provision edge devices using bootable disk or VM images created from bootc container images.</p>
+<p>Undersand the role of bootc image builder in the bootc container ecosystem.</p>
 </dd>
 </dl>
 </div>
@@ -246,13 +246,13 @@ It may be surprising to some, but bootc container images are NOT "bootable": no 
 <p>Use the bootc utility to ovewrite an existing RHEL installation with a bootc container image.</p>
 </li>
 <li>
-<p>Use the bootc image builder utility to create either a custom RHEL disk image in a format that your physical or virtual system can take as its system disk (also known as boot disk or root disk).</p>
+<p>Use the bootc image builder utility to create a custom RHEL disk image in a format that your physical or virtual system can take as its system disk, boot disk, or root disk.</p>
 </li>
 </ol>
 </div>
 <div class="paragraph">
 <p>The first two alternatives were used in the previous course as approaches for system testing, in a developer inner loop.
-They are easy to automate with current developer tools and continuous integration systems (CI) but they are cumbersome to apply to production systems, at scale, and are not very user friendly for professionals who are not developers nor Linux system administrators.</p>
+They are easy to automate with developer tools and continuous integration systems (CI) but they are cumbersome to apply to production systems, especially at scale, and are not very user friendly for professionals who are not developers nor Linux system administrators.</p>
 </div>
 <div class="paragraph">
 <p>This course focuses on the third alternative, which is the recommended one for provisioning production systems, and you will see do not require a deep Linux skills.</p>
