@@ -7,7 +7,7 @@ _Estimated reading time: *{time_estimate} minutes*._
 Objective::
 Provision edge devices using bootc containers and a customized RHEL installation media.
 
-WARNING: Work in progress
+WARNING: Pending review
 
 == Using bootc image builder
 

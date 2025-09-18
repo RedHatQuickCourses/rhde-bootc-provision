@@ -7,7 +7,7 @@ _Estimated reading time: *{time_estimate} minutes*._
 Objective::
 Create custom cloud images for virtual edge devices, by using bootc image builder, and perform day-1 configuration of those virtual devices using Cloud-init.
 
-WARNING: Not started yet
+WARNING: Pending review
 
 == Virtual and cloud-based edge devices
 

@@ -1,7 +1,7 @@
 = Provisioning Red Hat Device Edge Systems with Image Mode for RHEL
 :navtitle: Home
 
-WARNING: Work in progress
+WARNING: Pending review
 
 == Goal
 

@@ -7,7 +7,7 @@ _Estimated reading time: *{time_estimate} minutes*._
 Objective::
 Provision edge devices in a disconnected environment by using a customized RHEL installation media.
 
-WARNING: Work in progress
+WARNING: Pending review
 
 == Before you Begin
 

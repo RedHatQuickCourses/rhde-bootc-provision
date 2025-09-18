@@ -9,7 +9,7 @@ Undersand the role of bootc image builder in the bootc container ecosystem.
 
 // Undersand the process to provision edge devices using bootable disk or VM images created from bootc container images.
 
-WARNING: Work in progress
+WARNING: Pending review
 
 == What are Red Hat Device Edge and image mode for RHEL?
 

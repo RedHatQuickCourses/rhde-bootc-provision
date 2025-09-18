@@ -4,7 +4,7 @@ Goal::
 
 Provision Red Hat Device Edge systems, using image mode for RHEL, from bootable media.
 
-WARNING: Work in progress
+WARNING: Pending review
 
 == Introduction
 

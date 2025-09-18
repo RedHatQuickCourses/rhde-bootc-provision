@@ -4,7 +4,7 @@ Goal::
 
 Provision Red Hat Device Edge systems, using image mode for RHEL, from virtual disks by using custom cloud images.
 
-WARNING: Work in progress
+WARNING: Pending review
 
 == Introduction
 
