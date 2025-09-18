@@ -1,4 +1,4 @@
-:time_estimate: 12
+:time_estimate: 13
 
 = Lab: Provision Virtual Edge Devices Using Cloud Images and Cloud-Init
 

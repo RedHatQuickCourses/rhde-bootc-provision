@@ -1,4 +1,4 @@
-:time_estimate: 6
+:time_estimate: 5
 
 = Lab: Prepare to Build and Deploy Bootc Container Images
 
