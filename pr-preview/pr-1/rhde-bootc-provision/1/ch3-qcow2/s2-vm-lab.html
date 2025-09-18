@@ -158,7 +158,7 @@
 <dl>
 <dt class="hdlist1">Objective</dt>
 <dd>
-<p>Create custom cloud images for virtual edge devices, by using bootc image builder, and perform day-1 configuration of those virtual devices using cloud-init.</p>
+<p>Create custom cloud images for virtual edge devices, by using bootc image builder, and perform day-1 configuration of those virtual devices using Cloud-init.</p>
 </dd>
 </dl>
 </div>
@@ -191,13 +191,18 @@ The <em>development machine</em> has access to mirrors of RHEL package repositor
 If not, please adapt the instructions to your test environment.</p>
 </div>
 <div class="paragraph">
-<p>Make sure you verified your test environment by following the <a href="#TBD">first lab</a> of this course.</p>
+<p>Make sure you verified your test environment by following the <a href="#ch1-bib:s3-prereqs-lab.doc" class="xref unresolved">first lab</a> of this course.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="_instructions"><a class="anchor" href="#_instructions"></a>Instructions</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>You will use the bootc image builder utility to create a custom Qcow2 image, which day-1 configurations from both bootc image builder and Cloud-init, and provision a new VM from it.
+You will find that the configurations from Cloud-init were NOT applied, and that libvirt cannot introspect the VM instance.
+To solve these issues, you will add Cloud-init and the QEMU guest agent to the bootc container image, build a new Qcow2 image, and validate the fix by provisioning another VM.</p>
+</div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
@@ -227,7 +232,7 @@ Login Succeeded!</code></pre>
 </li>
 <li>
 <p>Verify that you have a bootc container image named <code>httpd-system:v1.0</code> in your private container registry.
-If you do not, please perform the <a href="#TBD">first lab</a>, which builds and publishes that image.</p>
+If you do not, please perform the <a href="#ch1-bib:s3-prereqs-lab.doc" class="xref unresolved">first lab</a>, which builds and publishes that image.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-none hljs">$ <strong>skopeo inspect --format '{{ json .RepoTags }}' docker://registry.lab.example.com:5000/httpd-system:v1.0</strong>
@@ -237,7 +242,7 @@ If you do not, please perform the <a href="#TBD">first lab</a>, which builds and
 </li>
 <li>
 <p>Verify that you have access to libvirt through its session interface.
-If you do not, please perform the preparation tasks from the <a href="#TBD">first lab</a>.</p>
+If you do not, please perform the preparation tasks from the <a href="#ch1-bib:s3-prereqs-lab.doc" class="xref unresolved">first lab</a>.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-none hljs">$ <strong>virsh list --all</strong>
@@ -278,7 +283,7 @@ $ <strong>cd temp-test-qcow2</strong></code></pre>
 </div>
 </li>
 <li>
-<p>Review the example bootc image builder TOML file named <code>config.toml</code>.</p>
+<p>Review the example bootc image builder TOML configuration file named <code>config.toml</code>.</p>
 <div class="paragraph">
 <p>It creates an initial user, so we can access VMs created from it and perform on-boarding.</p>
 </div>
@@ -299,7 +304,7 @@ groups = ["wheel"]</code></pre>
 </td>
 <td class="content">
 The TOML file provides no network customizations.
-You cannot perform them with bootc image builder, you must either use another day-1 customization technology, or have the network settings in your bootc container image.
+You cannot perform them with bootc image builder, you must either use another day-1 customization technology, or have the network settings hard-coded in your bootc container image.
 As it is, RHEL defaults to dynamic network configuration using DHCP, which is fine for the <em>test VM</em> you will create.
 </td>
 </tr>
@@ -440,7 +445,7 @@ $ <strong>sed -i "s|REPLACE_WITH_SSH_PUB_KEY|$SSH_PUB_KEY|" config.toml</strong>
 </div>
 </li>
 <li>
-<p>Embed the SSH key it in your cloud-init user data file.</p>
+<p>Embed the SSH key it in your Cloud-init user data file.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-none hljs">$ <strong>sed -i "s|REPLACE_WITH_SSH_PUB_KEY|$SSH_PUB_KEY|" user-data</strong></code></pre>
@@ -451,7 +456,7 @@ $ <strong>sed -i "s|REPLACE_WITH_SSH_PUB_KEY|$SSH_PUB_KEY|" config.toml</strong>
 </div>
 </li>
 <li>
-<p>Create a custom VM image in Qcow format.</p>
+<p>Create a custom VM image in Qcow2 format.</p>
 <div class="olist loweralpha">
 <ol class="loweralpha" type="a">
 <li>
@@ -497,7 +502,7 @@ Message: Results saved in .</code></pre>
 </li>
 <li>
 <p>Copy the installable ISO from the bootc image builder output directory to a more permanent location, and give it an easily identifiable name.
-That file would be distributed to personel responsible for installing actual edge devices.</p>
+That file would be distributed to personnel responsible for installing actual edge devices.</p>
 <div class="paragraph">
 <p>Make sure the file name matches the one expected by the <code>virt-install.sh</code> script.</p>
 </div>
@@ -523,9 +528,9 @@ That file would be distributed to personel responsible for installing actual edg
 <div class="olist loweralpha">
 <ol class="loweralpha" type="a">
 <li>
-<p>Invoke the script which creates a <em>test VM</em> from the qcow2 image.</p>
+<p>Invoke the script which creates a <em>test VM</em> from the Qcow2 image.</p>
 <div class="paragraph">
-<p>After the installation is complete and the VM reboots, dettach from its virtual serial console using <span class="keyseq"><kbd>Ctrl</kbd>+<kbd>C</kbd></span>.</p>
+<p>After the installation is complete and the VM reboots, detach from its virtual serial console using <span class="keyseq"><kbd>Ctrl</kbd>+<kbd>C</kbd></span>.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -571,7 +576,7 @@ Volume 'vda'(/home/student/.local/share/libvirt/images/bootc-qcow2.qcow2) remove
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-The <code>--remove-all-storage</code> deletes the Qcow2 file which boots the VM, so it is important to NOT use the copy in the <code>output</code> directory.
+The <code>--remove-all-storage</code> deletes the Qcow2 image which boots the VM, so it is important to NOT use the copy in the <code>output</code> directory.
 </td>
 </tr>
 </table>
@@ -581,7 +586,7 @@ The <code>--remove-all-storage</code> deletes the Qcow2 file which boots the VM,
 </div>
 </li>
 <li>
-<p>Verify that the test VM runs a web server with the mock web application files, but was NOT customized by cloud-init, and it is NOT running a guest agent either.</p>
+<p>Verify that the test VM runs a web server with the mock web application files, but was NOT customized by Cloud-init, and it is NOT running a guest agent either.</p>
 <div class="olist loweralpha">
 <ol class="loweralpha" type="a">
 <li>
@@ -625,7 +630,7 @@ Misc tests of bootc images and firewalld</code></pre>
 </div>
 </li>
 <li>
-<p>Verify that this VM does NOT have cloud-init installed.</p>
+<p>Verify that this VM does NOT have Cloud-init installed.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-none hljs">$ <strong>systemctl is-active cloud-init</strong>
@@ -657,7 +662,7 @@ Misc tests of bootc images and firewalld</code></pre>
 </div>
 </li>
 <li>
-<p>Use the SSH key to access your <em>test VM</em> as the <code>cloud-user</code> user, which should have been configured by cloud-init.</p>
+<p>Use the SSH key to access your <em>test VM</em> as the <code>cloud-user</code> user, which should have been configured by Cloud-init.</p>
 <div class="paragraph">
 <p>If you performed the previous lab, you must first remove the existing key from your known hosts file.</p>
 </div>
@@ -675,7 +680,7 @@ cloud-user@127.0.0.1: Permission denied (publickey,gssapi-keyex,gssapi-with-mic,
 </li>
 <li>
 <p>Using the <code>redhat456</code> password for the <code>cloud-user</code> user would not work either.
-The fact that you cannot log in as <code>cloud-user</code> and the hostname was not changed to <code>bootc-cloud-init</code> are signs that cloud-init was not running on your <em>test VM</em></p>
+The fact that you cannot log in as <code>cloud-user</code> and the hostname was not changed to <code>bootc-cloud-init</code> are signs that Cloud-init was not running on your <em>test VM</em></p>
 </li>
 <li>
 <p>Verify that your local hypervisor cannot get information about the operating system inside your <em>test VM</em>.</p>
@@ -690,7 +695,7 @@ error: Guest agent is not responding: QEMU guest agent is not connected</code></
 </div>
 </li>
 <li>
-<p>Stop your <em>test VM</em>, so you can create a new one with supports cloud-init and the QEMU guest agent.</p>
+<p>Stop your <em>test VM</em>, so you can create a new one with supports Cloud-init and the QEMU guest agent.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-none hljs">$ <strong>virsh destroy bootc-qcow2</strong>
@@ -699,7 +704,7 @@ Domain 'bootc-qcow2' destroyed</code></pre>
 </div>
 </li>
 <li>
-<p>Create a bootc container image with cloud-init and guest agent services.</p>
+<p>Create a bootc container image with Cloud-init and guest agent services.</p>
 <div class="olist loweralpha">
 <ol class="loweralpha" type="a">
 <li>
@@ -713,7 +718,7 @@ Domain 'bootc-qcow2' destroyed</code></pre>
 <li>
 <p>Review the new containerfile.</p>
 <div class="paragraph">
-<p>It installs the <code>cloud-init</code> and <code>qemy-guest-agent</code> packages and enable their respective Systemd units, over the <code>httpd-system</code> bootc container image.
+<p>It installs the <code>cloud-init</code> and <code>qemu-guest-agent</code> packages and enable their respective Systemd units, over the <code>httpd-system</code> bootc container image.
 This way, you get shorter image build and copy times.</p>
 </div>
 <div class="listingblock">
@@ -835,7 +840,7 @@ bootc-cloud-init login:</code></pre>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-You should see the hostname change in the VM&#8217;s login prompt, as a sign that, this time, it got customizations from cloud-init.
+You should see the hostname change in the VM&#8217;s login prompt, as a sign that, this time, it got customizations from Cloud-init.
 </td>
 </tr>
 </table>
@@ -845,7 +850,7 @@ You should see the hostname change in the VM&#8217;s login prompt, as a sign tha
 </div>
 </li>
 <li>
-<p>Access your new <em>test VM</em> using the initial user created by cloud-init.</p>
+<p>Access your new <em>test VM</em> using the initial user created by Cloud-init.</p>
 <div class="olist loweralpha">
 <ol class="loweralpha" type="a">
 <li>
@@ -863,7 +868,7 @@ $ <strong>ssh -i edge-key -p 8022 cloud-user@127.0.0.1</strong>
 </div>
 </li>
 <li>
-<p>Verify that your <em>test VM</em> has active cloud-init and guest agent services, and terminate its SSH session.</p>
+<p>Verify that your <em>test VM</em> has active Cloud-init and guest agent services, and terminate its SSH session.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-none hljs">$ <strong>systemctl is-active cloud-init</strong>

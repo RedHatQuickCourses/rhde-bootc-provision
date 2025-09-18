@@ -192,7 +192,7 @@ The <em>development machine</em> has access to mirrors of RHEL package repositor
 If not, please adapt the instructions to your test environment.</p>
 </div>
 <div class="paragraph">
-<p>Make sure you verified your test environment by following the <a href="#TBD">first lab</a> of this course.</p>
+<p>Make sure you verified your test environment by following the <a href="../ch1-bib/s3-prereqs-lab.html" class="xref page">first lab</a> of this course.</p>
 </div>
 </div>
 </div>
@@ -231,7 +231,7 @@ Login Succeeded!</code></pre>
 </li>
 <li>
 <p>Verify that you have a bootc container image named <code>httpd-system:v1.0</code> in your private container registry.
-If you do not, please perform the <a href="#TBD">first lab</a>, which builds and publishes that image.</p>
+If you do not, please perform the <a href="../ch1-bib/s3-prereqs-lab.html" class="xref page">first lab</a>, which builds and publishes that image.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-none hljs">$ <strong>skopeo inspect --format '{{ json .RepoTags }}' docker://registry.lab.example.com:5000/httpd-system:v1.0</strong>
@@ -241,7 +241,7 @@ If you do not, please perform the <a href="#TBD">first lab</a>, which builds and
 </li>
 <li>
 <p>Verify that you have access to libvirt through its session interface.
-If you do not, please perform the preparation tasks from the <a href="#TBD">first lab</a>.</p>
+If you do not, please perform the preparation tasks from the <a href="../ch1-bib/s3-prereqs-lab.html" class="xref page">first lab</a>.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-none hljs">$ <strong>virsh list --all</strong>
@@ -291,13 +291,13 @@ Notice that the kickstart script does NOT include an <code>ostreecontainer</code
 <div class="olist lowerroman">
 <ol class="lowerroman" type="i">
 <li>
-<p>Locale, keyboard, and other system settings so the installation can proceed unatended.</p>
+<p>Locale, keyboard, and other system settings so the installation can proceed unattended.</p>
 </li>
 <li>
 <p>A new partition table, with default automatic partitioning for RHEL.</p>
 </li>
 <li>
-<p>Dynamic network configuaration, using DHCP.</p>
+<p>Dynamic network configuration, using DHCP.</p>
 </li>
 <li>
 <p>A user named <code>core</code> with password <code>redhat123</code> and an SSH key.</p>
@@ -379,7 +379,7 @@ $ <strong>sed -i "s|REPLACE_WITH_SSH_PUB_KEY|$SSH_PUB_KEY|" config.toml</strong>
 <p>Podman pulls bootc image builder from our private registry.</p>
 </li>
 <li>
-<p>Bootc image builder creates an ISO image and uses a TOML file to pick its kickstart script.</p>
+<p>Bootc image builder creates an ISO image and uses the TOML file to pick its kickstart script.</p>
 </li>
 <li>
 <p>Bootc image builder uses the <code>httpd-system:v1.0</code> container image, which was previously pulled.</p>
@@ -508,7 +508,7 @@ Message: Results saved in .</code></pre>
 </li>
 <li>
 <p>Copy the installable ISO from the bootc image builder output directory to a more permanent location, and give it an easily identifiable name.
-That file would be distributed to personel responsible for installing actual edge devices.</p>
+That file would be distributed to personnel responsible for installing actual edge devices.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-none hljs">$ <strong>cp output/bootiso/install.iso httpd-system.iso</strong></code></pre>
@@ -540,7 +540,7 @@ $ <strong>sudo mount -o loop,ro httpd-system.iso temp-iso</strong></code></pre>
 </div>
 </li>
 <li>
-<p>Verify that there are two kickstart scripts inside the iso</p>
+<p>Verify that there are two kickstart scripts inside the ISO image.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-none hljs">$ <strong>ls temp-iso/*ks</strong>
@@ -562,8 +562,8 @@ timezone Etc/UTC --utc</code></pre>
 </div>
 </li>
 <li>
-<p>Verify that the included <code>osbuild-base.ks</code> file provides the <code>ostreecontainer</code> command.
-It also provides a <code>%post</code> script that changes the bootc container image reference from the installation media to the reference given to bootc image builder.</p>
+<p>Verify that the included <code>osbuild-base.ks</code> file contains an <code>ostreecontainer</code> command.
+It also contains a <code>%post</code> script that changes the bootc container image reference from the installation media to the reference given to bootc image builder.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-none hljs">$ <strong>head -n 3 temp-iso/osbuild-base.ks</strong>
@@ -574,7 +574,7 @@ bootc switch --mutate-in-place --transport registry registry.lab.example.com:500
 </div>
 </li>
 <li>
-<p>Umount the generated ISO image.</p>
+<p>Unmount the generated ISO image.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-none hljs">$ <strong>sudo umount temp-iso</strong></code></pre>
@@ -616,7 +616,7 @@ The <code>student</code> user is pre-configured to passwordless SSH access and w
 </div>
 </li>
 <li>
-<p>Install RHEL in a local VM, using the custom installation ISO, without acessing the container registry.</p>
+<p>Install RHEL in a local VM, using the custom installation ISO, without accessing the container registry.</p>
 <div class="olist loweralpha">
 <ol class="loweralpha" type="a">
 <li>
@@ -643,7 +643,7 @@ $ <strong>export LABEL=RHEL-10-0-BaseOS-x86_64</strong></code></pre>
 <li>
 <p>Invoke the script which creates a <em>test VM</em> from the ISO.</p>
 <div class="paragraph">
-<p>After the installation is complete and the VM reboots, detattch from its virtual serial console using <span class="keyseq"><kbd>Ctrl</kbd>+<kbd>C</kbd></span>.</p>
+<p>After the installation is complete and the VM reboots, detach from its virtual serial console using <span class="keyseq"><kbd>Ctrl</kbd>+<kbd>C</kbd></span>.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -789,7 +789,7 @@ You would use the <a href="https://github.com/FedoraQt/MediaWriter/releases">Fed
 <h2 id="_whats_next"><a class="anchor" href="#_whats_next"></a>What&#8217;s next</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The next chapter shows how to bootc image builder to build a cloud image and how to use cloud-init to perform day-1 customizations of virtual edge devices and edge cloud instances.</p>
+<p>The next chapter shows how to bootc image builder to build a cloud image and how to use Cloud-init to perform day-1 customizations of virtual edge devices and edge cloud instances.</p>
 </div>
 </div>
 </div>

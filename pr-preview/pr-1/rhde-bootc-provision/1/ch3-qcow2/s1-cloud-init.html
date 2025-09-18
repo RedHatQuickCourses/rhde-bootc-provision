@@ -197,27 +197,34 @@ And you could also use image mode for your non-edge cloud instances and data cen
 </div>
 </div>
 <div class="sect1">
-<h2 id="_bootc_image_builder_support_for_cloud_images"><a class="anchor" href="#_bootc_image_builder_support_for_cloud_images"></a>Bootc image builder support for cloud images</h2>
+<h2 id="_bootc_image_builder_support_for_raw_images_and_cloud_images"><a class="anchor" href="#_bootc_image_builder_support_for_raw_images_and_cloud_images"></a>Bootc image builder support for raw images and cloud images</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>You can use bootc image builder to build a variety of cloud images, from hypervisor-agnostic raw disk images to cloud-provider image formats, such as AWS AMI.
-Among the supported formats, yopu can build Qcow2 images for Red Hat OpenStack and Red Hat OpenShift Virtualization.</p>
+<p>You can use bootc image builder to build raw disk images, which you can copy, using the <code>dd</code> command, to anything that is a whole disk device, for example an SSD disk or a flash memory card.
+Then you can detach the device from your system, attach it as the first disk of another system, and boot from it.</p>
+</div>
+<div class="paragraph">
+<p>Raw images are sector-by-sector complete disks, including boot sectors, boot loaders, and partition tables.</p>
+</div>
+<div class="paragraph">
+<p>You can also use bootc image builder to build a variety of cloud images, such as AWS AMI and VMware VMDK.
+Among the supported formats, you can build Qcow2 images for Red Hat OpenStack and Red Hat OpenShift Virtualization.</p>
 </div>
 <div class="paragraph">
 <p>Command-line options provide bootc image builder with cloud credentials, so it can make your new image available on the cloud or hypervisor, but you can also publish the generated disk image in a web server or for creating local VMs.</p>
 </div>
 <div class="paragraph">
-<p>When building RAW and other image types, bootc image builder performs a <code>bootc install</code> command, so the resulting disk image already has a bootc container image deployed and runs its kernel and system settings from its first boot.
+<p>When building raw and cloud image types, bootc image builder performs a <code>bootc install</code> command, so the resulting disk image already has a bootc container image deployed and runs its kernel and system settings from its first boot.
 That image does not require access to an OCI container image registry to boot and provision, but will try to contact the image registry to check for updates.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_customizations_for_generic_disk_images"><a class="anchor" href="#_customizations_for_generic_disk_images"></a>Customizations for generic disk images</h2>
+<h2 id="_customizations_for_raw_and_cloud_disk_images"><a class="anchor" href="#_customizations_for_raw_and_cloud_disk_images"></a>Customizations for raw and cloud disk images</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Because raw, cloud, and hypervisor disk images would not run the RHEL installer (Anaconda), you cannot use kickstart scripts to perform day-1 customization, like you would with a custom installation ISO.
-Bootc image builder performs a number of customizations, defined in the <code>config.toml</code> file, such as creating initial users and partitioning disks, so it creates disk images which are ready to run.</p>
+Bootc image builder can perform a number of customizations, defined in the <code>config.toml</code> file, such as creating initial users and partitioning disks, so it creates disk images which are ready to run.</p>
 </div>
 <div class="paragraph">
 <p>The <a href="https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/10/html/using_image_mode_for_rhel_to_build_deploy_and_manage_operating_systems/creating-bootc-compatible-base-disk-images-by-using-bootc-image-builder" target="_blank" rel="noopener">RHEL product docs</a> provide a number of examples of customizations, but no reference information on the valid customization syntax.
@@ -232,10 +239,10 @@ You should refer to the <a href="https://osbuild.org/docs/bootc/#-build-config" 
 <h2 id="_day_1_customization_with_cloud_init"><a class="anchor" href="#_day_1_customization_with_cloud_init"></a>Day-1 customization with Cloud-init</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>While creating preconfigured disk images is useful for system testing and for provisioning VMs on RHEL virtualization, most hypervisors and cloud providers support day-1 configuration by using the <a href="https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/10/html/configuring_and_managing_cloud-init_for_rhel/index">Cloud-init service</a>, which is fully supported by RHEL.</p>
+<p>While fully preconfigured disk images are useful for system testing and also for provisioning VMs on RHEL virtualization, most hypervisors and cloud providers support day-1 configuration by using the <a href="https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/10/html/configuring_and_managing_cloud-init_for_rhel/index">Cloud-init service</a>, which is fully supported by RHEL.</p>
 </div>
 <div class="paragraph">
-<p>Cloud-init supports a larger variety of day-1 configurations, including running custom scripts, but you must install and enable it on your bootc container images.</p>
+<p>Cloud-init supports a larger variety of day-1 configurations than bootc image builder, including running custom scripts, but you must install and enable it on your bootc container images.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -244,29 +251,29 @@ You should refer to the <a href="https://osbuild.org/docs/bootc/#-build-config" 
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-The RHEL image builder service automatically installs and enables cloud-init when you select a cloud or hypervisor image type.
+The RHEL image builder service automatically installs and enables Cloud-init when you select a cloud or hypervisor image type.
 Bootc image builder does NOT make any change to your bootc images.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>You can perform day-1 configurations using both bootc image builder customizations and cloud-init, but there is little reason to do so.
-Most times, it is recommended that you use cloud-init.</p>
+<p>You can perform day-1 configurations using both bootc image builder customizations and Cloud-init, but there is little reason to do so.
+Most times, it is recommended that you use Cloud-init.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_system_images_with_cloud_agents"><a class="anchor" href="#_system_images_with_cloud_agents"></a>System images with cloud agents</h2>
+<h2 id="_system_images_with_cloud_and_guest_agents"><a class="anchor" href="#_system_images_with_cloud_and_guest_agents"></a>System images with cloud and guest agents</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Most cloud providers and hypervisors expect that VM instances are able to provide diagnostic information by means of a guest agent or cloud agent.
-Such software is provided by the cloud or hypervisor vendor and, though not required, it is recommended.
-Sometimes a vendor offers their agents under an open source license, so they are included as part of RHEL.
+<p>Most cloud providers and hypervisors expect that VM instances are able to provide diagnostic information by means of a guest agent or cloud agent which should be running in those instances.
+Sometimes a vendor offers their agents under an open source license, and they are included as part of RHEL.
 If not, you must follow the vendor&#8217;s instructions for obtaining and installing the agents, as part of your containerfiles.</p>
 </div>
 <div class="paragraph">
-<p>If you do not include and enable these agents on your bootc container images, you will not get introspection and monitoring features from the hypervisor or cloud management tools.</p>
+<p>Such software is provided by the cloud or hypervisor vendor and, though not required, it is recommended.
+If you do not include and enable these agents on your bootc container images, you will not get introspection and monitoring features from the hypervisor or cloud management tools.</p>
 </div>
 <div class="paragraph">
 <p>It may also be recommended, and sometimes required, adding special device drivers for virtual networking, storage, and other virtual hardware capabilities.
