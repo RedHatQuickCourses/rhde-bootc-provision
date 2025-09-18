@@ -28,7 +28,7 @@ On completing this course, you should be able to:
 
 == Audience
 
-Operations-focused customer roles, who design and implement sustem images for edge devices, but are not usually in-person at edge sites:
+Operations-focused customer roles, who design and implement system images for edge devices, but are not usually in-person at edge sites:
 
 * System Administrators (IT - Information Technology, and OT - Operations Technology)
 * Site Reliability Engineers (SREs)
@@ -70,7 +70,7 @@ After you enrolled to HOL019 once, you can use the following links for subsequen
 
 === For Red Hat customers
 
-If youy are a Red Hat customer with a *Red Hat Learning Subscription*, you can use the following link to access the virtual classroom lab on Red Hat Online Learning (ROLE):
+If you are a Red Hat customer with a *Red Hat Learning Subscription*, you can use the following link to access the virtual classroom lab on Red Hat Online Learning (ROLE):
 
 * https://rol.redhat.com/rol/app/courses/hol019-10.0/[HOL019 for Red Hat customers^] with a *Red Hat Learning Subscription*.
 

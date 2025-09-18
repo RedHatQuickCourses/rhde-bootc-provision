@@ -5,7 +5,7 @@
 _Estimated reading time: *{time_estimate} minutes*._
 
 Objective::
-Prepare for air-gapped building of bootc container images and deployment of disconnected edge devices.
+Prepare for air-gaped building of bootc container images and deployment of disconnected edge devices.
 
 WARNING: Pending review
 
@@ -24,9 +24,9 @@ If not, please adapt the instructions to your test environment.
 You will verify that you have access to mirrors of RHEL package repositories and bootc container images from RHEL. 
 You will also configure your _development machine_ with RHEL virtualization tools, based on libvirt, to use local VMs to stand in for physical edge devices.
 
-If you are reusing the same classrom environment of the https://redhatquickcourses.github.io/rhde-bootc-build/[previous course^] in the image mode with Red Hat Device Edge quick course series, you should have everything ready and will skip most steps here.
+If you are reusing the same classroom environment of the https://redhatquickcourses.github.io/rhde-bootc-build/[previous course^] in the image mode with Red Hat Device Edge quick course series, you should have everything ready and will skip most steps here.
 
-In the end of this lab, you will build a bootc container image which you will use as the main sample application during the remainer of this course.
+In the end of this lab, you will build a bootc container image which you will use as the main sample application during the remainder of this course.
 
 1. Verify that your _development machine_ has access to the RHEL package repositories from a DNF mirror.
 
@@ -183,4 +183,4 @@ If you need more context and explanation about the `httpd-system:v1.0` bootc con
 
 == What's next
 
-The next chapter demonstrates how to create a custom installation ISO embeding a bootc container image, which you can use for provining edge devices from either physical USB media or from network boot.
+The next chapter demonstrates how to create a custom installation ISO embedding a bootc container image, which you can use for provisioning edge devices from either physical USB media or from network boot.

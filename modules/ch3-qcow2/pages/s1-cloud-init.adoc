@@ -22,20 +22,25 @@ Image mode for RHEL could be used to provision and manage a RHEL-based hyperviso
 It could also be used to provision VM instances on any other hypervisor and cloud.
 And you could also use image mode for your non-edge cloud instances and data centers.
 
-== Bootc image builder support for cloud images
+== Bootc image builder support for raw images and cloud images
 
-You can use bootc image builder to build a variety of cloud images, from hypervisor-agnostic raw disk images to cloud-provider image formats, such as AWS AMI.
-Among the supported formats, yopu can build Qcow2 images for Red Hat OpenStack and Red Hat OpenShift Virtualization.
+You can use bootc image builder to build raw disk images, which you can copy, using the `dd` command, to anything that is a whole disk device, for example an SSD disk or a flash memory card.
+Then you can detach the device from your system, attach it as the first disk of another system, and boot from it.
+
+Raw images are sector-by-sector complete disks, including boot sectors, boot loaders, and partition tables.
+
+You can also use bootc image builder to build a variety of cloud images, such as AWS AMI and VMware VMDK.
+Among the supported formats, you can build Qcow2 images for Red Hat OpenStack and Red Hat OpenShift Virtualization.
 
 Command-line options provide bootc image builder with cloud credentials, so it can make your new image available on the cloud or hypervisor, but you can also publish the generated disk image in a web server or for creating local VMs.
 
-When building RAW and other image types, bootc image builder performs a `bootc install` command, so the resulting disk image already has a bootc container image deployed and runs its kernel and system settings from its first boot.
+When building raw and cloud image types, bootc image builder performs a `bootc install` command, so the resulting disk image already has a bootc container image deployed and runs its kernel and system settings from its first boot.
 That image does not require access to an OCI container image registry to boot and provision, but will try to contact the image registry to check for updates.
 
-== Customizations for generic disk images
+== Customizations for raw and cloud disk images
 
 Because raw, cloud, and hypervisor disk images would not run the RHEL installer (Anaconda), you cannot use kickstart scripts to perform day-1 customization, like you would with a custom installation ISO.
-Bootc image builder performs a number of customizations, defined in the `config.toml` file, such as creating initial users and partitioning disks, so it creates disk images which are ready to run.
+Bootc image builder can perform a number of customizations, defined in the `config.toml` file, such as creating initial users and partitioning disks, so it creates disk images which are ready to run.
 
 The https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/10/html/using_image_mode_for_rhel_to_build_deploy_and_manage_operating_systems/creating-bootc-compatible-base-disk-images-by-using-bootc-image-builder[RHEL product docs^] provide a number of examples of customizations, but no reference information on the valid customization syntax.
 You should refer to the https://osbuild.org/docs/bootc/#-build-config[community bootc image builder documentation^].
@@ -44,23 +49,23 @@ The customization syntax recognized by bootc image builder is a subset of the sy
 
 == Day-1 customization with Cloud-init
 
-While creating preconfigured disk images is useful for system testing and for provisioning VMs on RHEL virtualization, most hypervisors and cloud providers support day-1 configuration by using the https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/10/html/configuring_and_managing_cloud-init_for_rhel/index[Cloud-init service], which is fully supported by RHEL.
+While fully preconfigured disk images are useful for system testing and also for provisioning VMs on RHEL virtualization, most hypervisors and cloud providers support day-1 configuration by using the https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/10/html/configuring_and_managing_cloud-init_for_rhel/index[Cloud-init service], which is fully supported by RHEL.
 
-Cloud-init supports a larger variety of day-1 configurations, including running custom scripts, but you must install and enable it on your bootc container images.
+Cloud-init supports a larger variety of day-1 configurations than bootc image builder, including running custom scripts, but you must install and enable it on your bootc container images.
 
-NOTE: The RHEL image builder service automatically installs and enables cloud-init when you select a cloud or hypervisor image type.
+NOTE: The RHEL image builder service automatically installs and enables Cloud-init when you select a cloud or hypervisor image type.
 Bootc image builder does NOT make any change to your bootc images.
 
-You can perform day-1 configurations using both bootc image builder customizations and cloud-init, but there is little reason to do so.
-Most times, it is recommended that you use cloud-init.
+You can perform day-1 configurations using both bootc image builder customizations and Cloud-init, but there is little reason to do so.
+Most times, it is recommended that you use Cloud-init.
 
-== System images with cloud agents
+== System images with cloud and guest agents
 
-Most cloud providers and hypervisors expect that VM instances are able to provide diagnostic information by means of a guest agent or cloud agent.
-Such software is provided by the cloud or hypervisor vendor and, though not required, it is recommended.
-Sometimes a vendor offers their agents under an open source license, so they are included as part of RHEL.
+Most cloud providers and hypervisors expect that VM instances are able to provide diagnostic information by means of a guest agent or cloud agent which should be running in those instances.
+Sometimes a vendor offers their agents under an open source license, and they are included as part of RHEL.
 If not, you must follow the vendor's instructions for obtaining and installing the agents, as part of your containerfiles.
 
+Such software is provided by the cloud or hypervisor vendor and, though not required, it is recommended.
 If you do not include and enable these agents on your bootc container images, you will not get introspection and monitoring features from the hypervisor or cloud management tools.
 
 It may also be recommended, and sometimes required, adding special device drivers for virtual networking, storage, and other virtual hardware capabilities.

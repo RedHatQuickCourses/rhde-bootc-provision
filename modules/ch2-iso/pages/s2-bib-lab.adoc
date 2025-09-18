@@ -19,7 +19,7 @@ These instructions were tested on RHEL 10.0 but should work with minimal or no c
 If you are using the course classroom, log in on the `workstation` VM as the user `student` with password `student`.
 If not, please adapt the instructions to your test environment.
 
-Make sure you verified your test environment by following the xref:TBD[first lab] of this course.
+Make sure you verified your test environment by following the xref:ch1-bib:s3-prereqs-lab.adoc[first lab] of this course.
 
 == Instructions
 
@@ -47,7 +47,7 @@ Login Succeeded!
 --
 
 .. Verify that you have a bootc container image named `httpd-system:v1.0` in your private container registry.
-If you do not, please perform the xref:TBD[first lab], which builds and publishes that image.
+If you do not, please perform the xref:ch1-bib:s3-prereqs-lab.adoc[first lab], which builds and publishes that image.
 +
 [source,subs="verbatim,quotes"]
 --
@@ -56,7 +56,7 @@ $ *skopeo inspect --format '{{ json .RepoTags }}' docker://registry.lab.example.
 --
 
 .. Verify that you have access to libvirt through its session interface.
-If you do not, please perform the preparation tasks from the xref:TBD[first lab].
+If you do not, please perform the preparation tasks from the xref:ch1-bib:s3-prereqs-lab.adoc[first lab].
 +
 [source,subs="verbatim,quotes"]
 --
@@ -86,11 +86,11 @@ Its only content is an embedded Anaconda kickstart script.
 Notice that the kickstart script does NOT include an `ostreecontainer` command, but it configures the following:
 +
 --
-... Locale, keyboard, and other system settings so the installation can proceed unatended.
+... Locale, keyboard, and other system settings so the installation can proceed unattended.
 +
 ... A new partition table, with default automatic partitioning for RHEL.
 +
-... Dynamic network configuaration, using DHCP.
+... Dynamic network configuration, using DHCP.
 +
 ... A user named `core` with password `redhat123` and an SSH key.
 +
@@ -126,7 +126,7 @@ Make sure you can distinguish between command-line options and arguments for Pod
 +
 ... Podman pulls bootc image builder from our private registry.
 +
-... Bootc image builder creates an ISO image and uses a TOML file to pick its kickstart script.
+... Bootc image builder creates an ISO image and uses the TOML file to pick its kickstart script.
 +
 ... Bootc image builder uses the `httpd-system:v1.0` container image, which was previously pulled.
 --
@@ -195,7 +195,7 @@ Message: Results saved in .
 --
 
 .. Copy the installable ISO from the bootc image builder output directory to a more permanent location, and give it an easily identifiable name.
-That file would be distributed to personel responsible for installing actual edge devices.
+That file would be distributed to personnel responsible for installing actual edge devices.
 +
 [source,subs="verbatim,quotes"]
 --
@@ -219,7 +219,7 @@ $ *mkdir temp-iso*
 $ *sudo mount -o loop,ro httpd-system.iso temp-iso*
 --
 
-.. Verify that there are two kickstart scripts inside the iso
+.. Verify that there are two kickstart scripts inside the ISO image.
 +
 [source,subs="verbatim,quotes"]
 --
@@ -236,8 +236,8 @@ $ *head -n 5 temp-iso/osbuild.ks*
 include::1@samples:bib-iso:example$config.toml[lines=2..5]
 --
 
-.. Verify that the included `osbuild-base.ks` file provides the `ostreecontainer` command.
-It also provides a `%post` script that changes the bootc container image reference from the installation media to the reference given to bootc image builder. 
+.. Verify that the included `osbuild-base.ks` file contains an `ostreecontainer` command.
+It also contains a `%post` script that changes the bootc container image reference from the installation media to the reference given to bootc image builder. 
 +
 [source,subs="verbatim,quotes"]
 --
@@ -247,7 +247,7 @@ ostreecontainer --url=/run/install/repo/container --transport=oci
 bootc switch --mutate-in-place --transport registry registry.lab.example.com:5000/httpd-system:v1.0
 --
 
-.. Umount the generated ISO image.
+.. Unmount the generated ISO image.
 +
 [source,subs="verbatim,quotes"]
 --
@@ -277,7 +277,7 @@ $ *sudo systemctl stop registry*
 .. Keep this terminal open and its SSH session, because you will return to it in the end of this activity.
 
 
-6. Install RHEL in a local VM, using the custom installation ISO, without acessing the container registry.
+6. Install RHEL in a local VM, using the custom installation ISO, without accessing the container registry.
 
 .. Verify that your _development machine_ cannot access the private registry anymore.
 +
@@ -300,7 +300,7 @@ $ *export LABEL=RHEL-10-0-BaseOS-x86_64*
 
 .. Invoke the script which creates a _test VM_ from the ISO.
 +
-After the installation is complete and the VM reboots, detattch from its virtual serial console using kbd:[Ctrl+C].
+After the installation is complete and the VM reboots, detach from its virtual serial console using kbd:[Ctrl+C].
 +
 [source,subs="verbatim,quotes"]
 --
@@ -414,4 +414,4 @@ You would use the https://github.com/FedoraQt/MediaWriter/releases[Fedora Media 
 
 == What's next
 
-The next chapter shows how to bootc image builder to build a cloud image and how to use cloud-init to perform day-1 customizations of virtual edge devices and edge cloud instances.
+The next chapter shows how to bootc image builder to build a cloud image and how to use Cloud-init to perform day-1 customizations of virtual edge devices and edge cloud instances.
