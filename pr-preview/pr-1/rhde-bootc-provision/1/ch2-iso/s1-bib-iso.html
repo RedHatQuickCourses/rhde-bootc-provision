@@ -218,7 +218,7 @@ First, we focus on the arguments to Podman itself.</p>
 <pre class="highlightjs highlight"><code class="language-none hljs">$ sudo podman run --rm -it \ <i class="conum" data-value="1"></i><b>(1)</b>
     --privileged --security-opt label=type:unconfined_t \ <i class="conum" data-value="2"></i><b>(2)</b>
     -v /var/lib/containers/storage:/var/lib/containers/storage \ <i class="conum" data-value="3"></i><b>(3)</b>
-    -v $(pwd)/config.toml:/config.toml \ <i class="conum" data-value="3"></i><b>(3)</b>
+    -v $(pwd)/config.toml:/config.toml \ <i class="conum" data-value="4"></i><b>(4)</b>
     -v $(pwd)/output:/output \ <i class="conum" data-value="5"></i><b>(5)</b>
     registry.redhat.io/rhel10/bootc-image-builder \ <i class="conum" data-value="6"></i><b>(6)</b>
     <em>command line options for bootc image builder</em> \
@@ -377,26 +377,70 @@ Flags:
 <div class="sectionbody">
 <div class="paragraph">
 <p>The <code>config.toml</code> given to bootc image builder contains a number of customizations to be applied to while generating a bootable disk image.
-The set of valid customizations varies with the kind of disk images, and in the case of an ISO image, the only valid customizations is a kickstart script for Anaconda, the standard RHEL installation program.</p>
+The set of valid customizations varies with the kind of disk images and, in the case of an ISO image, the only valid customization is a kickstart script for Anaconda, the standard RHEL installation program.
+So your <code>config.toml</code> file would be:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">[customizations.installer.kickstart]
+contents = """
+<em>your kickstart script</em>
+"""</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Your entire kickstart script is the value of the <code>contents</code> entry inside the <code>customizations.installer.kickstart</code> section, as long as it needs to be.</p>
 </div>
 <div class="paragraph">
 <p>You do not need to provide a complete kickstart script.
 If you do not, Anaconda displays interactive screens for disk partitioning, local selection, etc.</p>
 </div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+You CANNOT include an <code>ostreecontainer</code> command on your kickstart file, because bootc image builder will prepend an <code>%include</code> instruction that refers to an automatically-generated kickstart script.
+That autogeneretad script refers to the location of the bootc container image which is embedded in the ISO disk image.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_day_1_customization_with_anaconda"><a class="anchor" href="#_day_1_customization_with_anaconda"></a>Day-1 customization with Anaconda</h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>You CANNOT include an <code>ostreecontainer</code> command on your kickstart file, because bootc image builder will append its own kickstart file with the location of the bootc container image embedded in the ISO disk image.</p>
+<p>You could create a bootc container image which preconfigures applications and already embeds secrets (credentials) for acessing corporate systems, but this is not usual.
+Most times, there are device-specific and site-specific configurations that you would perform at day-1, while provisioning edge devices.</p>
 </div>
 <div class="paragraph">
-<p>Lorem ipsum</p>
+<p>You could also provide a kickstart script which configures everything required at day-1, including setting secrets, but this is not common either.
+After all, the kickstart script, in USB media or a network server, would be an attack vector for getting such secrets.</p>
 </div>
 <div class="paragraph">
-<p>standard RHEL media vs custom RHEL media</p>
+<p>The recommended process involves creating a short-lived user account, with an SSH key, which is used as part of an on-boarding process, and removed at the end of the process.
+The on-boarding process sets site- and device-specific settings, and installs any secrets required to access local, corporate, and cloud services.</p>
 </div>
 <div class="paragraph">
-<p>Review day-1, day-2, and onboarding?</p>
+<p>There are many ways of automating on-boarding process, which are out of scope for this course.
+You will see sample kickstart scripts which configure an initial users with passwords and SSH keys.
+By creating that user from kickstart instead of as part of a bootc container image, you can remove the user at the end of the on-boarding process.</p>
 </div>
 <div class="paragraph">
-<p>Lorem ipsum</p>
+<p>It is usual, but not required, to provide a kickstart script which is complete regarding unattended installation, so Anaconda does not display any interactive installation screen and does not wait for any user input.
+Such kickstart script would configure system settings such as timezone, keyboard layout, and disk partitioning.</p>
+</div>
+<div class="paragraph">
+<p>You could have different kickstart scripts for each group of edge sites, for example to set different timezones and locates for different regions.
+In this case, you would create different ISO images with bootc image builder, from the same bootc container image, and distribute them to each region.</p>
+</div>
+<div class="paragraph">
+<p>The final preparation step, for provisioning physical edge devices, would be writing the ISO image to physical media, or copying it to a network boot server.
+In the former case, you could just use the <code>dd</code> command, using a raw device as the destination, or use specialized tools such as the Fedora Media Writer.</p>
 </div>
 </div>
 </div>
@@ -404,7 +448,7 @@ If you do not, Anaconda displays interactive screens for disk partitioning, loca
 <h2 id="_whats_next"><a class="anchor" href="#_whats_next"></a>What&#8217;s next</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Lorem ipsum</p>
+<p>The next lab creates a custom installation ISO and uses it to provision a local VM, demonstrating the process you would use to provision a physical edge device in disconnected mode.</p>
 </div>
 </div>
 </div>
