@@ -35,7 +35,7 @@ First, we focus on the arguments to Podman itself.
 $ sudo podman run --rm -it \ <1>
     --privileged --security-opt label=type:unconfined_t \ <2>
     -v /var/lib/containers/storage:/var/lib/containers/storage \ <3>
-    -v $(pwd)/config.toml:/config.toml \ <3>
+    -v $(pwd)/config.toml:/config.toml \ <4>
     -v $(pwd)/output:/output \ <5>
     registry.redhat.io/rhel10/bootc-image-builder \ <6>
     _command line options for bootc image builder_ \
@@ -138,21 +138,49 @@ Of course, you do not need to get help for bootc image builder as root, but ther
 == Customizations for ISO disk images
 
 The `config.toml` given to bootc image builder contains a number of customizations to be applied to while generating a bootable disk image. 
-The set of valid customizations varies with the kind of disk images, and in the case of an ISO image, the only valid customizations is a kickstart script for Anaconda, the standard RHEL installation program.
+The set of valid customizations varies with the kind of disk images and, in the case of an ISO image, the only valid customization is a kickstart script for Anaconda, the standard RHEL installation program.
+So your `config.toml` file would be:
+
+[source,subs="verbatim,quotes"]
+--
+[customizations.installer.kickstart]
+contents = """
+_your kickstart script_
+"""
+--
+
+Your entire kickstart script is the value of the `contents` entry inside the `customizations.installer.kickstart` section, as long as it needs to be. 
 
 You do not need to provide a complete kickstart script.
 If you do not, Anaconda displays interactive screens for disk partitioning, local selection, etc.
 
-You CANNOT include an `ostreecontainer` command on your kickstart file, because bootc image builder will append its own kickstart file with the location of the bootc container image embedded in the ISO disk image.
+IMPORTANT: You CANNOT include an `ostreecontainer` command on your kickstart file, because bootc image builder will prepend an `%include` instruction that refers to an automatically-generated kickstart script.
+That autogeneretad script refers to the location of the bootc container image which is embedded in the ISO disk image.
 
-Lorem ipsum
+== Day-1 customization with Anaconda
 
-standard RHEL media vs custom RHEL media
+You could create a bootc container image which preconfigures applications and already embeds secrets (credentials) for acessing corporate systems, but this is not usual.
+Most times, there are device-specific and site-specific configurations that you would perform at day-1, while provisioning edge devices.
 
-Review day-1, day-2, and onboarding?
+You could also provide a kickstart script which configures everything required at day-1, including setting secrets, but this is not common either.
+After all, the kickstart script, in USB media or a network server, would be an attack vector for getting such secrets.
 
-Lorem ipsum
+The recommended process involves creating a short-lived user account, with an SSH key, which is used as part of an on-boarding process, and removed at the end of the process.
+The on-boarding process sets site- and device-specific settings, and installs any secrets required to access local, corporate, and cloud services.
+
+There are many ways of automating on-boarding process, which are out of scope for this course.
+You will see sample kickstart scripts which configure an initial users with passwords and SSH keys.
+By creating that user from kickstart instead of as part of a bootc container image, you can remove the user at the end of the on-boarding process.
+
+It is usual, but not required, to provide a kickstart script which is complete regarding unattended installation, so Anaconda does not display any interactive installation screen and does not wait for any user input.
+Such kickstart script would configure system settings such as timezone, keyboard layout, and disk partitioning.
+
+You could have different kickstart scripts for each group of edge sites, for example to set different timezones and locates for different regions.
+In this case, you would create different ISO images with bootc image builder, from the same bootc container image, and distribute them to each region.
+
+The final preparation step, for provisioning physical edge devices, would be writing the ISO image to physical media, or copying it to a network boot server. 
+In the former case, you could just use the `dd` command, using a raw device as the destination, or use specialized tools such as the Fedora Media Writer.
 
 == What's next
 
-Lorem ipsum
+The next lab creates a custom installation ISO and uses it to provision a local VM, demonstrating the process you would use to provision a physical edge device in disconnected mode.
