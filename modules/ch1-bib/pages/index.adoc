@@ -2,7 +2,7 @@
 
 Goal::
 
-Describe the role of bootc image builder withing the overall process for building and deploying edge devices using image mode for RHEL.
+Describe the role of bootc image builder within the overall process for building and deploying edge devices using image mode for RHEL.
 
 WARNING: Pending review
 
@@ -10,7 +10,7 @@ WARNING: Pending review
 
 The https://redhatquickcourses.github.io/rhde-bootc-build/[first course] of the image mode with Red Hat Device Edge quick course series focused on building bootc container images using Podman and them performing system testing using local VMs, so developers could release their new bootc containers with confidence that they are ready for use by production systems.
 
-This course switches focus from development to operations, by focuing on the bootc image builder tool.
+This course switches focus from development to operations, by focusing on the bootc image builder tool.
 This tool solves the issue of being able to provision systems using system images create with image mode for RHEL, that is, bootc container images, at scale and by using workflows that look similar to provisioning systems using package mode for RHEL.
 
 Using bootc image builder you can create either custom RHEL installation media or custom cloud or hypervisor VM images which embed a bootc container image.
