@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Provision Edge Devices Using the RHEL Installer :: Provisioning Red Hat Device Edge Systems with Image Mode for RHEL</title>
+    <link rel="prev" href="index.html">
+    <link rel="next" href="s2-bib-lab.html">
+    <meta name="generator" content="Antora 3.1.3">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+    <script>var uiRootPath = '../../../_'</script>
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://www.redhat.com" target="_blank"><img src="../../../_/img/redhat-logo.png" height="40px" alt="Red Hat"></a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="../../..">Provisioning Red Hat Device Edge Systems with Image Mode for RHEL</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/rhde-bootc-provision/issues" target="_blank">Report Issues</a>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="rhde-bootc-provision" data-version="1">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html">Provisioning Red Hat Device Edge Systems with Image Mode for RHEL</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../index.html">Home</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../LABENV/index.html">Lab Environment</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../ch1-bib/index.html">Introduction to Bootc Image Builder with Red Hat Device Edge</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../ch1-bib/s1-bootc-image-builder.html">Provision Edge Devices Using Bootc Container Images</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../ch1-bib/s2-prereqs-quiz.html">Review of Bootc Container Images</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../ch1-bib/s3-prereqs-lab.html">Lab: Prepare to Build and Deploy Bootc Container Images</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">Build Custom RHEL Installation Media Using Image mode for RHEL</a>
+<ul class="nav-list">
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="s1-bib-iso.html">Provision Edge Devices Using the RHEL Installer</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="s2-bib-lab.html">Lab: Provision Edge Devices Using Custom Installation Media</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../ch3-qcow2/index.html">Build System Images for Clouds and Hypervisors Using Image Mode for RHEL</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../ch3-qcow2/s1-cloud-init.html">Provision Virtual Edge Devices Using Cloud Images</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../ch3-qcow2/s2-vm-lab.html">Lab: Provision Virtual Edge Devices Using Cloud Images and Cloud-Init</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Provisioning Red Hat Device Edge Systems with Image Mode for RHEL</span>
+    <span class="version">1</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../index.html">Provisioning Red Hat Device Edge Systems with Image Mode for RHEL</a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">1</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <a class="title" href="../../../samples/1/index.html">samples</a>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../samples/1/index.html">1</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">Provisioning Red Hat Device Edge Systems with Image Mode for RHEL</a></li>
+    <li><a href="index.html">Build Custom RHEL Installation Media Using Image mode for RHEL</a></li>
+    <li><a href="s1-bib-iso.html">Provision Edge Devices Using the RHEL Installer</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Provision Edge Devices Using the RHEL Installer</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p><em>Estimated reading time: <strong>7 minutes</strong>.</em></p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Objective</dt>
+<dd>
+<p>Provision edge devices using bootc containers and a customized RHEL installation media.</p>
+</dd>
+</dl>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+Pending review
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_using_bootc_image_builder"><a class="anchor" href="#_using_bootc_image_builder"></a>Using bootc image builder</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>After you build a bootc container image and publish it in an OCI container registry, you can use bootc image builder to create different kinds of bootable disk images embedding the bootc container image.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/s1-bib-iso-fig-1.svg" alt="Workflow from building bootc container images to provisioning edge devices, with highlight on the usage of bootc image builder.">
+</div>
+</div>
+<div class="paragraph">
+<p>Bootc image builder takes tree inputs:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The name of a bootc container image, which was already downloaded (pulled) into the local containers storage.</p>
+</li>
+<li>
+<p>A configuration file in the TOML format, which defines customizations to be applied to the bootable disk image.</p>
+</li>
+<li>
+<p>An output directory, where it saves the bootable disk image and a number of temporary files.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Bootc image builder is provided as an application container image, which you MUST run as a privileged container.
+That means it is not very friendly to developer workflows, especially in organizations which restrict privileges of developers on their own work machines and continuous integration (CI) servers.
+Bootc image builder is positioned as a system administrator tool.</p>
+</div>
+<div class="paragraph">
+<p>This is a typical Podman command to run bootc image builder.
+First, we focus on the arguments to Podman itself.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">$ sudo podman run --rm -it \ <i class="conum" data-value="1"></i><b>(1)</b>
+    --privileged --security-opt label=type:unconfined_t \ <i class="conum" data-value="2"></i><b>(2)</b>
+    -v /var/lib/containers/storage:/var/lib/containers/storage \ <i class="conum" data-value="3"></i><b>(3)</b>
+    -v $(pwd)/config.toml:/config.toml \ <i class="conum" data-value="4"></i><b>(4)</b>
+    -v $(pwd)/output:/output \ <i class="conum" data-value="5"></i><b>(5)</b>
+    registry.redhat.io/rhel10/bootc-image-builder \ <i class="conum" data-value="6"></i><b>(6)</b>
+    <em>command line options for bootc image builder</em> \
+    <em>command line arguments for bootc image builder</em> \</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Run an interactive container, and remove the container when it terminates.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Run a privileged container, with an unconfined SELinux context.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Mount the system containers storage, which is the one for the root user.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Mount the TOML configuration file for bootc image builder.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>Mount the output directory.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="6"></i><b>6</b></td>
+<td>Name of the bootc image builder application container.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>To download (pull) the bootc image builder application container from Red Hat, you need a valid Red Hat customer portal account, which can be a free Red Hat Developer account.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+You do NOT need to run bootc image builder from the Red Hat registry.
+You can copy it to a private registry inside your organization&#8217;s network, and run it from there.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Now we focus on the arguments to bootc image builder:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">$ sudo podman run <em>command line options for podman</em> \
+    registry.redhat.io/rhel10/bootc-image-builder \
+    --type iso \ <i class="conum" data-value="1"></i><b>(1)</b>
+    --config /config.toml \ <i class="conum" data-value="2"></i><b>(2)</b>
+    registry.example.com/mybootc:tag <i class="conum" data-value="3"></i><b>(3)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Type of disk image to generate, in this case an ISO installation media for RHEL.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Name of the TOML configuration file, which must match the name used in the <code>-v</code> option for Podman.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Name of the bootc container container image to embed in the disk image.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The bootc container image must be previously downloaded to the system containers storage, that is, you must run:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">$ sudo podman pull registry.example.com/mybootc:tag</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Before attempting to run booc image builder.</p>
+</div>
+<div class="paragraph">
+<p>Because you do not install bootc image builder from an RPM package, you will not find man pages for it.
+Fortunately, its application container accepts the usual <code>--help</code> command line option.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">$ sudo podman run --rm \
+    registry.redhat.io/rhel10/bootc-image-builder \
+    --help
+
+Create a bootable image from an ostree native container
+
+Usage:
+  bootc-image-builder [command]
+
+Available Commands:
+  build       Create a bootable image from an ostree native container (default command)
+  completion  Generate the autocompletion script for the specified shell
+  help        Help about any command
+  manifest    Only create the manifest but don't build the image.
+  version     Show the version and quit
+
+Flags:
+  -h, --help               help for bootc-image-builder
+      --log-level string   logging level (debug, info, error); default error
+  -v, --verbose            Switch to verbose mode
+      --version            version for bootc-image-builder
+
+Use "bootc-image-builder [command] --help" for more information about a command.</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Most of the time you will use the default <code>build</code> command from bootc image builder, and you can get help for that command as:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">$ sudo podman run --rm \
+  registry.redhat.io/rhel10/bootc-image-builder \
+  build --help
+
+Create a bootable image from an ostree native container
+(default action if no command is given)
+IMAGE_NAME: container image to build into a bootable image
+
+Usage:
+  bootc-image-builder build IMAGE_NAME
+
+Examples:
+bootc-image-builder build quay.io/centos-bootc/centos-bootc:stream9
+bootc-image-builder quay.io/centos-bootc/centos-bootc:stream9
+
+
+Flags:
+      --aws-ami-name string      name for the AMI in AWS (only for type=ami)
+      --aws-bucket string        target S3 bucket name for intermediate storage when creating AMI (only for type=ami)
+      --aws-region string        target region for AWS uploads (only for type=ami)
+...</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Of course, you do not need to get help for bootc image builder as root, but there is no point downloading the bootc image builder application container to the containers storage of your regular, unprivileged Linux user because the <code>build</code> command requires a privileged container, which must be started as root.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_customizations_for_iso_disk_images"><a class="anchor" href="#_customizations_for_iso_disk_images"></a>Customizations for ISO disk images</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <code>config.toml</code> given to bootc image builder contains a number of customizations to be applied to while generating a bootable disk image.
+The set of valid customizations varies with the kind of disk images and, in the case of an ISO image, the only valid customization is a kickstart script for Anaconda, the standard RHEL installation program.
+So your <code>config.toml</code> file would be:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">[customizations.installer.kickstart]
+contents = """
+<em>your kickstart script</em>
+"""</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Your entire kickstart script is the value of the <code>contents</code> entry inside the <code>customizations.installer.kickstart</code> section, as long as it needs to be.</p>
+</div>
+<div class="paragraph">
+<p>You do not need to provide a complete kickstart script.
+If you do not, Anaconda displays interactive screens for disk partitioning, local selection, etc.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+You CANNOT include an <code>ostreecontainer</code> command on your kickstart file, because bootc image builder will prepend an <code>%include</code> instruction that refers to an automatically-generated kickstart script.
+That autogenerated script refers to the location of the bootc container image which is embedded in the ISO disk image.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_day_1_customization_with_anaconda"><a class="anchor" href="#_day_1_customization_with_anaconda"></a>Day-1 customization with Anaconda</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You could create a bootc container image which preconfigures applications and already embeds secrets (credentials) for accessing corporate systems, but this is not usual.
+Most times, there are device-specific and site-specific configurations that you would perform at day-1, while provisioning edge devices.</p>
+</div>
+<div class="paragraph">
+<p>You could also provide a kickstart script which configures everything required at day-1, including setting secrets, but this is not common either.
+After all, the kickstart script, in USB media or a network server, would be an attack vector for getting such secrets.</p>
+</div>
+<div class="paragraph">
+<p>The recommended process involves creating a short-lived user account, with an SSH key, which is used as part of an on-boarding process, and removed at the end of the process.
+The on-boarding process sets site- and device-specific settings, and installs any secrets required to access local, corporate, and cloud services.</p>
+</div>
+<div class="paragraph">
+<p>There are many ways of automating on-boarding process, which are out of scope for this course.
+You will see sample kickstart scripts which configure an initial users with passwords and SSH keys.
+By creating that user from kickstart instead of as part of a bootc container image, you can remove the user at the end of the on-boarding process.</p>
+</div>
+<div class="paragraph">
+<p>It is usual, but not required, to provide a kickstart script which is complete regarding unattended installation, so Anaconda does not display any interactive installation screen and does not wait for any user input.
+Such kickstart script would configure system settings such as time zone, keyboard layout, and disk partitioning.</p>
+</div>
+<div class="paragraph">
+<p>You could have different kickstart scripts for each group of edge sites, for example to set different time zones and locates for different regions.
+In this case, you would create different ISO images with bootc image builder, from the same bootc container image, and distribute them to each region.</p>
+</div>
+<div class="paragraph">
+<p>The final preparation step, for provisioning physical edge devices, would be writing the ISO image to physical media, or copying it to a network boot server.
+In the former case, you could just use the <code>dd</code> command, using a raw device as the destination, or use specialized tools such as the Fedora Media Writer.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_whats_next"><a class="anchor" href="#_whats_next"></a>What&#8217;s next</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The next lab creates a custom installation ISO and uses it to provision a local VM, demonstrating the process you would use to provision a physical edge device in disconnected mode.</p>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="index.html">Build Custom RHEL Installation Media Using Image mode for RHEL</a></span>
+  <span class="next"><a href="s2-bib-lab.html">Lab: Provision Edge Devices Using Custom Installation Media</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <img src="../../../_/img/rhl-logo-red.png" height="40px" alt="Red Hat"  href="https://redhat.com" >
+</footer><script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

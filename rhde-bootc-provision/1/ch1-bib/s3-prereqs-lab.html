@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Lab: Prepare to Build and Deploy Bootc Container Images :: Provisioning Red Hat Device Edge Systems with Image Mode for RHEL</title>
+    <link rel="prev" href="s2-prereqs-quiz.html">
+    <link rel="next" href="../ch2-iso/index.html">
+    <meta name="generator" content="Antora 3.1.3">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+    <script>var uiRootPath = '../../../_'</script>
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://www.redhat.com" target="_blank"><img src="../../../_/img/redhat-logo.png" height="40px" alt="Red Hat"></a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="../../..">Provisioning Red Hat Device Edge Systems with Image Mode for RHEL</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/rhde-bootc-provision/issues" target="_blank">Report Issues</a>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="rhde-bootc-provision" data-version="1">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html">Provisioning Red Hat Device Edge Systems with Image Mode for RHEL</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../index.html">Home</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../LABENV/index.html">Lab Environment</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">Introduction to Bootc Image Builder with Red Hat Device Edge</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="s1-bootc-image-builder.html">Provision Edge Devices Using Bootc Container Images</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="s2-prereqs-quiz.html">Review of Bootc Container Images</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="s3-prereqs-lab.html">Lab: Prepare to Build and Deploy Bootc Container Images</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../ch2-iso/index.html">Build Custom RHEL Installation Media Using Image mode for RHEL</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../ch2-iso/s1-bib-iso.html">Provision Edge Devices Using the RHEL Installer</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../ch2-iso/s2-bib-lab.html">Lab: Provision Edge Devices Using Custom Installation Media</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../ch3-qcow2/index.html">Build System Images for Clouds and Hypervisors Using Image Mode for RHEL</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../ch3-qcow2/s1-cloud-init.html">Provision Virtual Edge Devices Using Cloud Images</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../ch3-qcow2/s2-vm-lab.html">Lab: Provision Virtual Edge Devices Using Cloud Images and Cloud-Init</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Provisioning Red Hat Device Edge Systems with Image Mode for RHEL</span>
+    <span class="version">1</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../index.html">Provisioning Red Hat Device Edge Systems with Image Mode for RHEL</a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">1</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <a class="title" href="../../../samples/1/index.html">samples</a>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../samples/1/index.html">1</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">Provisioning Red Hat Device Edge Systems with Image Mode for RHEL</a></li>
+    <li><a href="index.html">Introduction to Bootc Image Builder with Red Hat Device Edge</a></li>
+    <li><a href="s3-prereqs-lab.html">Lab: Prepare to Build and Deploy Bootc Container Images</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Lab: Prepare to Build and Deploy Bootc Container Images</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p><em>Estimated reading time: <strong>5 minutes</strong>.</em></p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Objective</dt>
+<dd>
+<p>Prepare for air-gaped building of bootc container images and deployment of disconnected edge devices.</p>
+</dd>
+</dl>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+Pending review
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_before_you_begin"><a class="anchor" href="#_before_you_begin"></a>Before you Begin</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You need a <em>development machine</em> running Red Hat Enterprise Liunux (RHEL), to which you have unrestricted sudo rights, and access to RHEL package repositories.
+That machine must have plenty of disk space to store multiple container images and multiple virtual machine (VM) images.</p>
+</div>
+<div class="paragraph">
+<p>These instructions were tested on RHEL 10.0 but should work with minimal or no changes on newer and older RHEL releases, since 9.6.</p>
+</div>
+<div class="paragraph">
+<p>If you are using the course classroom, log in on the <code>workstation</code> VM as the user <code>student</code> with password <code>student</code>.
+If not, please adapt the instructions to your test environment.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_instructions"><a class="anchor" href="#_instructions"></a>Instructions</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You will verify that you have access to mirrors of RHEL package repositories and bootc container images from RHEL.
+You will also configure your <em>development machine</em> with RHEL virtualization tools, based on libvirt, to use local VMs to stand in for physical edge devices.</p>
+</div>
+<div class="paragraph">
+<p>If you are reusing the same classroom environment of the <a href="https://redhatquickcourses.github.io/rhde-bootc-build/" target="_blank" rel="noopener">previous course</a> in the image mode with Red Hat Device Edge quick course series, you should have everything ready and will skip most steps here.</p>
+</div>
+<div class="paragraph">
+<p>In the end of this lab, you will build a bootc container image which you will use as the main sample application during the remainder of this course.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Verify that your <em>development machine</em> has access to the RHEL package repositories from a DNF mirror.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>List the configured package repositories.
+They should match the standard RHEL package repositories.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">$ <strong>dnf repolist</strong>
+rhel-10.0-for-x86_64-appstream-rpms                                                                       Red Hat Enterprise Linux 10.0 AppStream (dvd)
+rhel-10.0-for-x86_64-baseos-rpms                                                                          Red Hat Enterprise Linux 10.0 BaseOS (dvd)</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Verify that your RHEL package repositories do NOT point to the Red Hat customer portal.
+Instead they should point to a machine inside your virtual labs environment.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">$ <strong>dnf repoinfo rhel-10.0-for-x86_64-baseos-rpms | grep baseurl</strong>
+...
+Repo-baseurl       : http://content.example.com/rhel10.0/x86_64/dvd/BaseOS</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Install the container tools on your <em>development machine</em>.</p>
+<div class="paragraph">
+<p>You already have Podman installed, but during this course you will use additional convenience tools, such as Skopeo.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">$ <strong>sudo dnf install skopeo buildah</strong>
+...
+Complete!</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Verify that your <em>development machine</em> has access to bootc base images from a private registry.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>The private registry requires authentication, even for images that would be public on the Red Hat registries.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">$ <strong>podman login -u student -p redhat registry.lab.example.com:5000</strong>
+Login Succeeded!</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>List all images available on the private registry.
+The list should include some application container images and some bootc container images, for different releases of RHEL.</p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+if you are continuing from the <a href="https://redhatquickcourses.github.io/rhde-bootc-build/" target="_blank" rel="noopener">previous course</a>, your search results will include more images than displayed here.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">$ <strong>podman search registry.lab.example.com:5000/</strong>
+NAME                                                                  DESCRIPTION
+registry.lab.example.com:5000/openshift4/microshift-bootc-rhel9
+registry.lab.example.com:5000/rhel10/bootc-image-builder
+registry.lab.example.com:5000/rhel10/rhel-bootc
+registry.lab.example.com:5000/rhel9-eus/rhel-9.6-bootc
+registry.lab.example.com:5000/rhel9-eus/rhel-9.6-bootc-image-builder
+registry.lab.example.com:5000/ubi10/ubi
+registry.lab.example.com:5000/ubi9/ubi</code></pre>
+</div>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+The <code>podman search</code> command, and similar commands from other tools such as Docker, are not reliable to list container images in a production container registry nor to verify the availability of an image by its name and tag.
+The <code>podman search</code> command works here only because there is a small number of container images stored in the private registry.
+</td>
+</tr>
+</table>
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Install the RHEL virtualization tools.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Install the Libvirt tools and enable the Libvirt socket.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">$ <strong>sudo dnf install qemu-kvm libvirt virt-install virt-viewer</strong>
+...
+Complete!
+$ <strong>sudo systemctl enable virtqemud.socket --now</strong>
+Created symlink /etc/systemd/system/multi-user.target.wants/virtqemud.socket → /usr/lib/systemd/system/virtqemud.socket.</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Check that your unprivileged user can connect to Libvirt&#8217;s session interface.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">$ <strong>virsh uri</strong>
+qemu:///session
+$ <strong>virsh nodeinfo</strong>
+CPU model:           x86_64
+...</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>If you need, clone the course samples repository from GitHub.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>If you already cloned that Git repository from the previous course you can skip to the next step.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">$ <strong>ls rhde-bootc-samples</strong>
+LICENSE  antora.yml  bib-cloud-init  bib-iso  bib-qcow2  bootc-install  httpd-system  httpd-cloud-init  httpd-system  httpd-ubi  ks  libvirt-scripts  modules  package-mode  webapp-bootc  webapp-fixed</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+It is OK if your clone contains more directories than listed above.
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p>If you do not have a directory named <code>rhde-bootc-samples</code> with subdirectories named <code>httpd-system</code>, <code>bib-iso</code>, and <code>bib-qcow2</code>, you need to clone the repository from scratch.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">$ <strong>git clone https://github.com/RedHatQuickCourses/rhde-bootc-samples.git</strong>
+Cloning into 'rhde-bootc-samples'...
+...</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>If you think that your clone may be outdated, because you started the first course before the remaining courses were available, you can just update you local clone.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">$ <strong>cd rhde-bootc-samples</strong>
+$ <strong>git pull</strong></code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Build a bootc container image and publish it in an OCI container registry.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>If you already have the <code>httpd-system:v1.0</code> container image on your private container registry, you can skip to the end of this lab.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">$ skopeo inspect --format '{{ .RepoTags }}' docker://registry.lab.example.com:5000/httpd-system:v1.0
+[v1.0]</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+It is OK if there are more tags for the <code>httpd-system</code> container image, as long as there is a tag named <code>v1.0</code>.
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p>If you do not have the <code>httpd-system:v1.0</code> container image, you must build it from the course samples git repository.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">$ <strong>cd rhde-bootc-samples</strong>
+$ <strong>cd httpd-system</strong>
+$ <strong>podman build -t httpd-system .</strong>
+...
+Successfully tagged localhost/httpd-system:latest</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Do not forget the last argument to the <code>podman build</code> command, which is a dot (<code>.</code>) for the current working directory.
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p>Publish the image with the <code>v1.0</code> tag.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">$ <strong>skopeo copy containers-storage:localhost/httpd-system docker://registry.lab.example.com:5000/httpd-system:v1.0</strong>
+...
+Copying config 8f58cf789c done   |
+Writing manifest to image destination</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>If you need more context and explanation about the <code>httpd-system:v1.0</code> bootc container image, please refer to the <a href="https://redhatquickcourses.github.io/rhde-bootc-build/" target="_blank" rel="noopener">previous course</a>, which includes an explanation of its containerfile.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_whats_next"><a class="anchor" href="#_whats_next"></a>What&#8217;s next</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The next chapter demonstrates how to create a custom installation ISO embedding a bootc container image, which you can use for provisioning edge devices from either physical USB media or from network boot.</p>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="s2-prereqs-quiz.html">Review of Bootc Container Images</a></span>
+  <span class="next"><a href="../ch2-iso/index.html">Build Custom RHEL Installation Media Using Image mode for RHEL</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <img src="../../../_/img/rhl-logo-red.png" height="40px" alt="Red Hat"  href="https://redhat.com" >
+</footer><script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>
