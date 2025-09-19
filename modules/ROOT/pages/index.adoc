@@ -22,6 +22,8 @@ Red Hat employees and partners must also enroll on HOL019 by following the links
 
 On completing this course, you should be able to:
 
+* Describe the role of bootc image builder withing the overall process for building and deploying edge devices using image mode for RHEL.
+
 * Provision Red Hat Device Edge systems, using image mode for RHEL, from bootable media.
 
 * Provision Red Hat Device Edge systems, using image mode for RHEL, from virtual disks, by using custom cloud images.

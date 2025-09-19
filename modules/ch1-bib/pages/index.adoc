@@ -2,7 +2,7 @@
 
 Goal::
 
-Understand the role of bootc image builder withing the overall process for building and deploying edge devices using image mode for RHEL.
+Describe the role of bootc image builder withing the overall process for building and deploying edge devices using image mode for RHEL.
 
 WARNING: Pending review
 

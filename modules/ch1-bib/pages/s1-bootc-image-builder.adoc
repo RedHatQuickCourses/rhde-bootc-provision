@@ -5,7 +5,7 @@
 _Estimated reading time: *{time_estimate} minutes*._
 
 Objective::
-Understand the role of the bootc image builder utility in the bootc container ecosystem.
+Understand the purpose of the bootc image builder utility in the bootc container ecosystem.
 
 // Undersand the process to provision edge devices using bootable disk or VM images created from bootc container images.
 
