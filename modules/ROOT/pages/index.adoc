@@ -1,7 +1,7 @@
 = Provisioning Red Hat Device Edge Systems with Image Mode for RHEL
 :navtitle: Home
 
-WARNING: Work in progress
+WARNING: Pending review
 
 == Goal
 
@@ -22,13 +22,15 @@ Red Hat employees and partners must also enroll on HOL019 by following the links
 
 On completing this course, you should be able to:
 
+* Describe the role of bootc image builder withing the overall process for building and deploying edge devices using image mode for RHEL.
+
 * Provision Red Hat Device Edge systems, using image mode for RHEL, from bootable media.
 
 * Provision Red Hat Device Edge systems, using image mode for RHEL, from virtual disks, by using custom cloud images.
 
 == Audience
 
-Operations-focused customer roles, who design and implement sustem images for edge devices, but are not usually in-person at edge sites:
+Operations-focused customer roles, who design and implement system images for edge devices, but are not usually in-person at edge sites:
 
 * System Administrators (IT - Information Technology, and OT - Operations Technology)
 * Site Reliability Engineers (SREs)
@@ -70,7 +72,7 @@ After you enrolled to HOL019 once, you can use the following links for subsequen
 
 === For Red Hat customers
 
-If youy are a Red Hat customer with a *Red Hat Learning Subscription*, you can use the following link to access the virtual classroom lab on Red Hat Online Learning (ROLE):
+If you are a Red Hat customer with a *Red Hat Learning Subscription*, you can use the following link to access the virtual classroom lab on Red Hat Online Learning (ROLE):
 
 * https://rol.redhat.com/rol/app/courses/hol019-10.0/[HOL019 for Red Hat customers^] with a *Red Hat Learning Subscription*.
 

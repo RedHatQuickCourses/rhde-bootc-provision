@@ -1,0 +1,21 @@
+:time_estimate: 13
+
+= Review of Bootc Container Images
+
+_Estimated reading time: *{time_estimate} minutes*._
+
+Goal::
+
+Assess that the learner has the knowledge about bootc containers required to learn the topics in this course.
+
+WARNING: Pending review
+
+== Interactive Assessment
+
+++++
+<iframe type="text/javascript" src='_attachments/s2-assessment.html' style="width: 768px; height: 732px" allowfullscreen webkitallowfullscreen mozAllowFullScreen allow="autoplay *; fullscreen *; encrypted-media *" frameborder="0"></iframe>
+++++
+
+== What's next
+
+The first lab of this course explores the virtual labs environments for hands-on activities and builds sample bootc container images to be used by the following activities.

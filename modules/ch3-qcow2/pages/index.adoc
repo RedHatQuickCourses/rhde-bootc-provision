@@ -1,0 +1,14 @@
+= Build System Images for Clouds and Hypervisors Using Image Mode for RHEL
+
+Goal::
+
+Provision Red Hat Device Edge systems, using image mode for RHEL, from virtual disks by using custom cloud images.
+
+WARNING: Pending review
+
+== Introduction
+
+This chapter describes how to use bootc image builder for building VM images for IaaS clouds and hypervisors, and how to enable services which enable day-1 customization and monitoring of your image mode systems by the target IaaS cloud or hypervisor.
+
+You will see that, while it is possible to perform some day-1 customization by using bootc image builder directly, the common approach would be by using the https://cloud-init.io/[Cloud-init] system service.
+

@@ -1,0 +1,15 @@
+= Build Custom RHEL Installation Media Using Image mode for RHEL
+
+Goal::
+
+Provision Red Hat Device Edge systems, using image mode for RHEL, from bootable media.
+
+WARNING: Pending review
+
+== Introduction
+
+This chapter describes the general usage of the bootc image builder tool and how to use it specifically for building custom RHEL installation media.
+
+While it is true that you can use standard RHEL installation media to provision image mode systems, that requires network access to an OCI container registry.
+Building a custom RHEL installation image, as an ISO image, by using bootc image builder, enables you to provision disconnected image mode systems from USB media or from local network servers.
+

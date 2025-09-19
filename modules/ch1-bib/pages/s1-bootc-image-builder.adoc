@@ -1,0 +1,63 @@
+:time_estimate: 4
+
+= Provision Edge Devices Using Bootc Container Images
+
+_Estimated reading time: *{time_estimate} minutes*._
+
+Objective::
+Understand the purpose of the bootc image builder utility in the bootc container ecosystem.
+
+// Undersand the process to provision edge devices using bootable disk or VM images created from bootc container images.
+
+WARNING: Pending review
+
+== What are Red Hat Device Edge and image mode for RHEL?
+
+Red Hat Device Edge is a software and support subscription that bundles three components:
+
+. Red Hat Enterprise Linux (RHEL), which includes a feature set known as *RHEL for edge*.
+. Red Hat build of MicroShift.
+. Red Hat Ansible Automation Platform.
+
+image::s1-devices-fig-1.svg[title="Components of Red Hat Device Edge"]
+
+Red Hat Device Edge brings in a pricing and supportability scope that is more aligned with the characteristics of edge devices, as opposed to server-class machines.
+
+Red Hat Device Edge does NOT provide a different edition of RHEL, or a subset of RHEL.
+Many features of RHEL were developed to address the requirements of edge scenarios and are also proven valuable in data center scenarios.
+On the other hand, features from RHEL that were designed for data center scenarios are also valuable in edge scenarios.
+
+== What is image mode for RHEL?
+
+https://www.redhat.com/en/technologies/linux-platforms/enterprise-linux-10/image-mode[Image mode^] for Red Hat Enterprise Linux enables you to manage your OS with the same tools and workflows as for application containers, creating a consistent experience and common language across development and infra-structure teams.
+
+Provisioning and updating RHEL systems by using image mode is faster and more reliable than with the traditional approach of dealing with RPM packages one at a time.
+The traditional approach is now called _package mode_ for RHEL.
+
+It is also easier for operational technology (OT) professionals, who are typically NOT Linux sysadmins, to perform device provisioning and updates using image mode for RHEL on _far edge_ sites than with package mode for RHEL.
+
+== What is bootc image builder?
+
+Bootc image builder is a tool designed to create bootable disk images from bootc container images.
+It may be surprising to some, but bootc container images are NOT "bootable": no existing computer firmware, cloud provider, or hypervisor is capable of booting either physical or virtual system directly from bootc container images.
+
+To effectively use a boot container image as a system image, to provision edge devices or any other kind of system running image mode for RHEL, there are three options:
+
+. Use the standard RHEL installer (Anaconda) with a custom kickstart script that configures an installation source in an OCI container registry.
+
+. Use the bootc utility to overwrite an existing RHEL installation with a bootc container image.
+
+. Use the bootc image builder utility to create a custom RHEL disk image in a format that your physical or virtual system can take as its system disk, boot disk, or root disk.
+
+The first two alternatives were used in the previous course as approaches for system testing, in a developer inner loop.
+They are easy to automate with developer tools and continuous integration systems (CI) but they are cumbersome to apply to production systems, especially at scale, and are not very user friendly for professionals who are not developers or Linux system administrators.
+
+This course focuses on the third alternative, which is the recommended one for provisioning production systems, and you will see do not require a deep Linux skills to operationalize.
+
+== What's next
+
+The following quiz provides an opportunity to assess your knowledge about bootc container images and image mode for RHEL.
+
+You should be able to complete and learn skills from this course, even if you do no pass the quiz and do not have sufficient knowledge to build your own bootc container images.
+
+It is recommended that the core team which builds and supports image mode for an organization possess skills of the complete lifecycle from building to provisioning and updating image mode systems.
