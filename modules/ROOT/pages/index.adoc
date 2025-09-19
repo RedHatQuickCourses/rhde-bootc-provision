@@ -15,18 +15,18 @@ It is the second in a series of quick courses about using image mode for RHEL wi
 
 . Updating and Repurposing Red Hat Device Edge Systems with Image Mode for RHEL (not created yet)
 
-IMPORTANT: Red Hat associates must enroll using its http://ADD-LINK[Red Hat University] entry, and Red Hat Partners must enroll using its http://ADD-LINK[Red Hat Partner Connect] entry.
+IMPORTANT: Red Hat associates must enroll using its https://training-lms.redhat.com/sso/saml/auth/rhlpint?RelayState=deeplinkoffering%3D85515489[Red Hat University] entry, and Red Hat Partners must enroll using its https://training-lms.redhat.com/sso/saml/auth/rhopen?RelayState=deeplinkoffering%3D85515707[Red Hat Partner Connect] entry.
 Red Hat employees and partners must also enroll on HOL019 by following the links on the _Classroom environment_ heading bellow
 
 == Objectives
 
 On completing this course, you should be able to:
 
-* Describe the role of bootc image builder withing the overall process for building and deploying edge devices using image mode for RHEL.
+* Describe the role of bootc image builder within the overall process for building and deploying edge devices using image mode for RHEL.
 
 * Provision Red Hat Device Edge systems, using image mode for RHEL, from bootable media.
 
-* Provision Red Hat Device Edge systems, using image mode for RHEL, from virtual disks, by using custom cloud images.
+* Provision Red Hat Device Edge systems, using image mode for RHEL, from virtual disks by using custom cloud images.
 
 == Audience
 
