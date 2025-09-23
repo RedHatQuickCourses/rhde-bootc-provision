@@ -13,7 +13,7 @@ It is the second in a series of quick courses about using image mode for RHEL wi
 
 . Updating and Repurposing Red Hat Device Edge Systems with Image Mode for RHEL (not created yet)
 
-IMPORTANT: Red Hat associates must enroll using the https://training-lms.redhat.com/sso/saml/auth/rhlpint?RelayState=deeplinkoffering%3D85515489[Red Hat Learning Portal], and Red Hat Partners must enroll using https://training-lms.redhat.com/sso/saml/auth/rhopen?RelayState=deeplinkoffering%3D85515707[Red Hat Partner Connect].
+IMPORTANT: Red Hat associates must enroll using the https://training-lms.redhat.com/sso/saml/auth/rhlpint?RelayState=deeplinkoffering%3D85515489[Red Hat Learning Portal], and Red Hat Partners must enroll using the https://training-lms.redhat.com/sso/saml/auth/rhopen?RelayState=deeplinkoffering%3D85515707[Red Hat Partner Connect].
 Red Hat employees and partners must also enroll on HOL019 by following the links in the _Classroom environment_ heading bellow
 
 == Objectives
@@ -61,7 +61,7 @@ IMPORTANT: The image mode with Red Hat Device Edge quick courses use ROLE for th
 If you are a Red Hat associate or partner, you must first enroll in the virtual classroom lab, by using one of the following links:
 
 * https://training-lms.redhat.com/sso/saml/auth/rhlpint?RelayState=deeplinkoffering=84932767[HOL019 for Red Hat associates^] on the Red Hat Learning Portal
-* https://training-lms.redhat.com/sso/saml/auth/rhopen?RelayState=deeplinkoffering=84932768[HOL019 for Red Hat partners^] on Red Hat Partner Connect
+* https://training-lms.redhat.com/sso/saml/auth/rhopen?RelayState=deeplinkoffering=84932768[HOL019 for Red Hat partners^] on the Red Hat Partner Connect
 
 After you enrolled to HOL019 once, you can use the following links for subsequent accesses to the virtual classroom lab directly on the Red Hat Online Learning (ROLE):
 
