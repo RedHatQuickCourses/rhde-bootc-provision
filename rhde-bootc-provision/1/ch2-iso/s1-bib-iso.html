@@ -181,7 +181,7 @@ Pending review
 <h2 id="_using_bootc_image_builder"><a class="anchor" href="#_using_bootc_image_builder"></a>Using bootc image builder</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>After you build a bootc container image and publish it in an OCI container registry, you can use bootc image builder to create different kinds of bootable disk images embedding the bootc container image.</p>
+<p>After you build a bootc container image and publish it in an OCI container registry, you can use bootc image builder to create different kinds of bootable disk images that embed bootc container images.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -189,7 +189,7 @@ Pending review
 </div>
 </div>
 <div class="paragraph">
-<p>Bootc image builder takes tree inputs:</p>
+<p>Bootc image builder takes three inputs:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -206,7 +206,7 @@ Pending review
 </div>
 <div class="paragraph">
 <p>Bootc image builder is provided as an application container image, which you MUST run as a privileged container.
-That means it is not very friendly to developer workflows, especially in organizations which restrict privileges of developers on their own work machines and continuous integration (CI) servers.
+That means it is not very friendly to developer workflows, especially in organizations which restrict privileges of developers on their own work machines and CI servers.
 Bootc image builder is positioned as a system administrator tool.</p>
 </div>
 <div class="paragraph">
@@ -422,13 +422,13 @@ Most times, there are device-specific and site-specific configurations that you 
 After all, the kickstart script, in USB media or a network server, would be an attack vector for getting such secrets.</p>
 </div>
 <div class="paragraph">
-<p>The recommended process involves creating a short-lived user account, with an SSH key, which is used as part of an on-boarding process, and removed at the end of the process.
-The on-boarding process sets site- and device-specific settings, and installs any secrets required to access local, corporate, and cloud services.</p>
+<p>The recommended process involves creating a short-lived user account, with an SSH key, which is used as part of an onboarding process, and removed at the end of the process.
+The onboarding process sets site- and device-specific settings, and installs any secrets required to access local, corporate, and cloud services.</p>
 </div>
 <div class="paragraph">
-<p>There are many ways of automating on-boarding process, which are out of scope for this course.
-You will see sample kickstart scripts which configure an initial users with passwords and SSH keys.
-By creating that user from kickstart instead of as part of a bootc container image, you can remove the user at the end of the on-boarding process.</p>
+<p>There are many ways of automating onboarding process, which are out of scope for this course.
+You will see sample kickstart scripts which configure a initial user with password and SSH key.
+By creating that user from kickstart instead of as part of a bootc container image, you can remove the user at the end of the onboarding process.</p>
 </div>
 <div class="paragraph">
 <p>It is usual, but not required, to provide a kickstart script which is complete regarding unattended installation, so Anaconda does not display any interactive installation screen and does not wait for any user input.

@@ -285,7 +285,7 @@ $ <strong>cd temp-test-qcow2</strong></code></pre>
 <li>
 <p>Review the example bootc image builder TOML configuration file named <code>config.toml</code>.</p>
 <div class="paragraph">
-<p>It creates an initial user, so we can access VMs created from it and perform on-boarding.</p>
+<p>It creates an initial user, so we can access VMs created from it and perform onboarding.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -304,7 +304,8 @@ groups = ["wheel"]</code></pre>
 </td>
 <td class="content">
 The TOML file provides no network customizations.
-You cannot perform them with bootc image builder, you must either use another day-1 customization technology, or have the network settings hard-coded in your bootc container image.
+You cannot perform them with bootc image builder.
+You must either use another day-1 customization technology, or have the network settings hard-coded in your bootc container image.
 As it is, RHEL defaults to dynamic network configuration using DHCP, which is fine for the <em>test VM</em> you will create.
 </td>
 </tr>
@@ -716,7 +717,7 @@ Domain 'bootc-qcow2' destroyed</code></pre>
 </div>
 </li>
 <li>
-<p>Review the new containerfile.</p>
+<p>Review the new Containerfile.</p>
 <div class="paragraph">
 <p>It installs the <code>cloud-init</code> and <code>qemu-guest-agent</code> packages and enable their respective Systemd units, over the <code>httpd-system</code> bootc container image.
 This way, you get shorter image build and copy times.</p>
