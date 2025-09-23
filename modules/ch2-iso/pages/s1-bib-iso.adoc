@@ -7,8 +7,6 @@ _Estimated reading time: *{time_estimate} minutes*._
 Objective::
 Provision edge devices using bootc containers and a customized RHEL installation media.
 
-WARNING: Pending review
-
 == Using bootc image builder
 
 After you build a bootc container image and publish it in an OCI container registry, you can use bootc image builder to create different kinds of bootable disk images that embed bootc container images.

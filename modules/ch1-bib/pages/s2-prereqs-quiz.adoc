@@ -8,8 +8,6 @@ Goal::
 
 Assess that the learner has the knowledge about bootc containers required to learn the topics in this course.
 
-WARNING: Pending review
-
 == Interactive Assessment
 
 ++++

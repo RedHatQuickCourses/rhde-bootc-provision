@@ -1,8 +1,6 @@
 = Provisioning Red Hat Device Edge Systems with Image Mode for RHEL
 :navtitle: Home
 
-WARNING: Pending review
-
 == Goal
 
 This course teaches how to provision edge devices and kiosk computers using image mode for RHEL, from bootc container images published on an OCI container registry, by using either custom installation media or custom cloud images.

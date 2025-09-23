@@ -7,8 +7,6 @@ _Estimated reading time: *{time_estimate} minutes*._
 Objective::
 Provision edge devices in a disconnected environment by using a customized RHEL installation media.
 
-WARNING: Pending review
-
 == Before you Begin
 
 You need a _development machine_ running RHEL, to which you have unrestricted sudo access.

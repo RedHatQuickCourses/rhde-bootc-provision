@@ -9,8 +9,6 @@ Understand the purpose of the bootc image builder utility in the bootc container
 
 // Undersand the process to provision edge devices using bootable disk or VM images created from bootc container images.
 
-WARNING: Pending review
-
 == What are Red Hat Device Edge and image mode for RHEL?
 
 Red Hat Device Edge is a software and support subscription that bundles three components:

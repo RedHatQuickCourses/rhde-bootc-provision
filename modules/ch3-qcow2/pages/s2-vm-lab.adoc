@@ -7,8 +7,6 @@ _Estimated reading time: *{time_estimate} minutes*._
 Objective::
 Create custom cloud images for virtual edge devices, by using bootc image builder, and perform day-1 configuration of those virtual devices using Cloud-init.
 
-WARNING: Pending review
-
 == Before you Begin
 
 You need a _development machine_ running RHEL, to which you have unrestricted sudo access.

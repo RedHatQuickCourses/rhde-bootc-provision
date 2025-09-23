@@ -7,8 +7,6 @@ _Estimated reading time: *{time_estimate} minutes*._
 Objective::
 Prepare for air-gaped building of bootc container images and deployment of disconnected edge devices.
 
-WARNING: Pending review
-
 == Before you Begin
 
 You need a _development machine_ running Red Hat Enterprise Liunux (RHEL), to which you have unrestricted sudo rights, and access to RHEL package repositories.
