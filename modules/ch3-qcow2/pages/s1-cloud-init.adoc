@@ -14,7 +14,7 @@ WARNING: Pending review
 Edge computing exists in a variety of shapes and forms.
 From far edge sites, where small devices are deployed by themselves in open and hazardous environments, to near edge sites which provide server racks, uninterruptible power supply, and other IT infrastructure which resembles central corporate sites.
 
-It makes sense, for some edge scenarios, to run virtualized workloads.
+It makes sense for some edge scenarios to run virtualized workloads.
 It could be a regular RHEL server, using libvirt virtualization, or a larger OpenShift Virtualization cluster.
 It could also be your preferred virtualization vendor or the on-premises services of IaaS cloud providers, such as AWS Outposts.
 
@@ -63,17 +63,17 @@ Most times, it is recommended that you use Cloud-init.
 
 Most cloud providers and hypervisors expect that VM instances are able to provide diagnostic information by means of a guest agent or cloud agent which should be running in those instances.
 Sometimes a vendor offers their agents under an open source license, and they are included as part of RHEL.
-If not, you must follow the vendor's instructions for obtaining and installing the agents, as part of your containerfiles.
+If not, you must follow the vendor's instructions for obtaining and installing the agents, as part of your Containerfiles.
 
 Such software is provided by the cloud or hypervisor vendor and, though not required, it is recommended.
 If you do not include and enable these agents on your bootc container images, you will not get introspection and monitoring features from the hypervisor or cloud management tools.
 
-It may also be recommended, and sometimes required, adding special device drivers for virtual networking, storage, and other virtual hardware capabilities.
-Depending on the vendor, it may be necessary running the `dracut` utility, on your containerfile, to add those drivers to the initial RAM disk embedded on your bootc container image.
+It may also be recommended, and sometimes required, to add special device drivers for virtual networking, storage, and other virtual hardware capabilities.
+Depending on the vendor, it may be necessary to run the `dracut` utility, on your Containerfile, to add those drivers to the initial RAM disk embedded on your bootc container image.
 
 == What's next
 
 The final lab of this course uses bootc image builder to create a Qcow2 image which you can test using libvirt.
-It them shows that the VM misses services to enable integration with the hypervisor, and adds the required packages and settings to a new bootc container image.
+It then shows that the VM misses services to enable integration with the hypervisor, and adds the required packages and settings to a new bootc container image.
 
 In addition to demonstrating general practices that you would adapt to any cloud or hypervisor, it demonstrates that you can fully test disk images intended for Red Hat OpenShift Virtualization and Red Hat OpenStack using a RHEL system or any other Linux system with the Libvirt virtualization management layer, such as Fedora Linux.

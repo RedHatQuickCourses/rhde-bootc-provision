@@ -136,7 +136,7 @@ Cloning into 'rhde-bootc-samples'...
 ...
 --
 
-.. If you think that your clone may be outdated, because you started the first course before the remaining courses were available, you can just update you local clone.
+.. If you think that your clone may be outdated, because you started the first course before the remaining courses were available, you can just update your local clone.
 +
 [source,subs="verbatim,quotes"]
 --
@@ -179,7 +179,7 @@ Copying config 8f58cf789c done   |
 Writing manifest to image destination
 --
 
-If you need more context and explanation about the `httpd-system:v1.0` bootc container image, please refer to the https://redhatquickcourses.github.io/rhde-bootc-build/[previous course^], which includes an explanation of its containerfile.
+If you need more context and explanation about the `httpd-system:v1.0` bootc container image, please refer to the https://redhatquickcourses.github.io/rhde-bootc-build/[previous course^], which includes an explanation of its Containerfile.
 
 == What's next
 

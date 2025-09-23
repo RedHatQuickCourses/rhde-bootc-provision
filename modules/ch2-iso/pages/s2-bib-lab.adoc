@@ -354,7 +354,7 @@ $ *sudo bootc status*
        Version: 10.0 (2025-08-15 21:23:47.500494502 UTC)
 --
 
-.. Verify that the Apache Web Server is active is your _test VM_ and .
+.. Verify that the Apache Web Server is active is your _test VM_.
 +
 [source,subs="verbatim,quotes"]
 --
@@ -371,7 +371,7 @@ Misc tests of bootc images and firewalld.
 $ *exit*
 --
 
-.. Verify that the host can also access the mock web application, through  port-forwarding, similar to how SSH access works.
+.. Verify that the host can also access the mock web application, through port-forwarding, similar to how SSH access works.
 +
 [source,subs="verbatim,quotes"]
 --

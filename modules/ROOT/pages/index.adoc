@@ -15,8 +15,8 @@ It is the second in a series of quick courses about using image mode for RHEL wi
 
 . Updating and Repurposing Red Hat Device Edge Systems with Image Mode for RHEL (not created yet)
 
-IMPORTANT: Red Hat associates must enroll using its https://training-lms.redhat.com/sso/saml/auth/rhlpint?RelayState=deeplinkoffering%3D85515489[Red Hat University] entry, and Red Hat Partners must enroll using its https://training-lms.redhat.com/sso/saml/auth/rhopen?RelayState=deeplinkoffering%3D85515707[Red Hat Partner Connect] entry.
-Red Hat employees and partners must also enroll on HOL019 by following the links on the _Classroom environment_ heading bellow
+IMPORTANT: Red Hat associates must enroll using the https://training-lms.redhat.com/sso/saml/auth/rhlpint?RelayState=deeplinkoffering%3D85515489[Red Hat Learning Portal], and Red Hat Partners must enroll using https://training-lms.redhat.com/sso/saml/auth/rhopen?RelayState=deeplinkoffering%3D85515707[Red Hat Partner Connect].
+Red Hat employees and partners must also enroll on HOL019 by following the links in the _Classroom environment_ heading bellow
 
 == Objectives
 
@@ -37,7 +37,7 @@ Operations-focused customer roles, who design and implement system images for ed
 * Platform Engineers
 * DevOps Engineers
 
-Red Hat and Partner roles that perform demonstrations, PoC and PoV of Red Hat Device Edge as part of a sales motion, such as Solutions Architects
+Red Hat and Partner roles that perform demonstrations, PoC and PoV of Red Hat Device Edge as part of a sales motion, such as Solutions Architects.
 
 Red Hat and Partner roles that support customers of Red Hat Device Edge, such as Services Consultants and Customer Support Engineers.
 
@@ -47,7 +47,7 @@ This course assumes that you have the following experience:
 
 * Having completed https://redhatquickcourses.github.io/rhde-bootc-build/[Building System Images for Red Hat Device Edge with Image Mode for RHEL] or already possessing equivalent skills.
 
-* Familiarity with RHEL system administration, to the level of RHCA (Red Hat Certified System Administrator) or equivalent knowledge.
+* Familiarity with RHEL system administration, to the level of RHCSA (Red Hat Certified System Administrator) or equivalent knowledge.
 * Familiarity with Linux container tools, such as Podman, and technologies compatible with OCI specifications, such as container registries.
 * Familiarity with web server administration, such as Apache Web Server or NGinx, is useful but not required.
 * Familiarity with database server administration, such as MariaDB or PostgreSQL, is useful but not required.
@@ -56,13 +56,13 @@ This course assumes that you have the following experience:
 
 You can perform all activities in this course using the virtual classroom lab from *HOL019: Image Mode with Red Hat Device Edge Quick Course Series*, in the Red Hat Online Learning Environment (ROLE), which is shared by all quick courses about image mode with Red Hat Device Edge and will be updated as required for future related courses.
 
-IMPORTANT: The image mode with Red Hat Device Edge quick courses use ROLE for their virtual classroom labs only, and hosts courses materials outside of ROLE, as GitHub pages.
+IMPORTANT: The image mode with Red Hat Device Edge quick courses use ROLE for their virtual classroom labs only, and hosts course materials outside of ROLE, as GitHub pages.
 
 === For Red Hat associates and partners
 
 If you are a Red Hat associate or partner, you must first enroll in the virtual classroom lab, by using one of the following links:
 
-* https://training-lms.redhat.com/sso/saml/auth/rhlpint?RelayState=deeplinkoffering=84932767[HOL019 for Red Hat associates^] on Red Hat University
+* https://training-lms.redhat.com/sso/saml/auth/rhlpint?RelayState=deeplinkoffering=84932767[HOL019 for Red Hat associates^] on the Red Hat Learning Portal
 * https://training-lms.redhat.com/sso/saml/auth/rhopen?RelayState=deeplinkoffering=84932768[HOL019 for Red Hat partners^] on Red Hat Partner Connect
 
 After you enrolled to HOL019 once, you can use the following links for subsequent accesses to the virtual classroom lab directly on the Red Hat Online Learning (ROLE):

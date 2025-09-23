@@ -85,7 +85,7 @@ $ *cd temp-test-qcow2*
 
 .. Review the example bootc image builder TOML configuration file named `config.toml`.
 +
-It creates an initial user, so we can access VMs created from it and perform on-boarding.
+It creates an initial user, so we can access VMs created from it and perform onboarding.
 +
 [source,subs="verbatim,quotes"]
 --
@@ -93,7 +93,8 @@ include::1@samples:bib-qcow2:example$config.toml[]
 --
 +
 NOTE: The TOML file provides no network customizations.
-You cannot perform them with bootc image builder, you must either use another day-1 customization technology, or have the network settings hard-coded in your bootc container image.
+You cannot perform them with bootc image builder.
+You must either use another day-1 customization technology, or have the network settings hard-coded in your bootc container image.
 As it is, RHEL defaults to dynamic network configuration using DHCP, which is fine for the _test VM_ you will create.
 
 .. Review the cloud-init configuration file named `user-data`.
@@ -371,7 +372,7 @@ Domain 'bootc-qcow2' destroyed
 $ **cp ../rhde-bootc-samples/bib-cloud-init/* .**
 --
 
-.. Review the new containerfile.
+.. Review the new Containerfile.
 +
 It installs the `cloud-init` and `qemu-guest-agent` packages and enable their respective Systemd units, over the `httpd-system` bootc container image.
 This way, you get shorter image build and copy times.

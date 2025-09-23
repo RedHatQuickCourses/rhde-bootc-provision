@@ -11,11 +11,11 @@ WARNING: Pending review
 
 == Using bootc image builder
 
-After you build a bootc container image and publish it in an OCI container registry, you can use bootc image builder to create different kinds of bootable disk images embedding the bootc container image.
+After you build a bootc container image and publish it in an OCI container registry, you can use bootc image builder to create different kinds of bootable disk images that embed bootc container images.
 
 image::s1-bib-iso-fig-1.svg["Workflow from building bootc container images to provisioning edge devices, with highlight on the usage of bootc image builder."]
 
-Bootc image builder takes tree inputs:
+Bootc image builder takes three inputs:
 
 * The name of a bootc container image, which was already downloaded (pulled) into the local containers storage.
 
@@ -24,7 +24,7 @@ Bootc image builder takes tree inputs:
 * An output directory, where it saves the bootable disk image and a number of temporary files.
 
 Bootc image builder is provided as an application container image, which you MUST run as a privileged container.
-That means it is not very friendly to developer workflows, especially in organizations which restrict privileges of developers on their own work machines and continuous integration (CI) servers.
+That means it is not very friendly to developer workflows, especially in organizations which restrict privileges of developers on their own work machines and CI servers.
 Bootc image builder is positioned as a system administrator tool.
 
 This is a typical Podman command to run bootc image builder.
@@ -165,12 +165,12 @@ Most times, there are device-specific and site-specific configurations that you 
 You could also provide a kickstart script which configures everything required at day-1, including setting secrets, but this is not common either.
 After all, the kickstart script, in USB media or a network server, would be an attack vector for getting such secrets.
 
-The recommended process involves creating a short-lived user account, with an SSH key, which is used as part of an on-boarding process, and removed at the end of the process.
-The on-boarding process sets site- and device-specific settings, and installs any secrets required to access local, corporate, and cloud services.
+The recommended process involves creating a short-lived user account, with an SSH key, which is used as part of an onboarding process, and removed at the end of the process.
+The onboarding process sets site- and device-specific settings, and installs any secrets required to access local, corporate, and cloud services.
 
-There are many ways of automating on-boarding process, which are out of scope for this course.
-You will see sample kickstart scripts which configure an initial users with passwords and SSH keys.
-By creating that user from kickstart instead of as part of a bootc container image, you can remove the user at the end of the on-boarding process.
+There are many ways of automating onboarding process, which are out of scope for this course.
+You will see sample kickstart scripts which configure a initial user with password and SSH key.
+By creating that user from kickstart instead of as part of a bootc container image, you can remove the user at the end of the onboarding process.
 
 It is usual, but not required, to provide a kickstart script which is complete regarding unattended installation, so Anaconda does not display any interactive installation screen and does not wait for any user input.
 Such kickstart script would configure system settings such as time zone, keyboard layout, and disk partitioning.
