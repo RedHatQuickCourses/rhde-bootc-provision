@@ -25,6 +25,8 @@ You will use the bootc image builder utility to create a custom Qcow2 image, whi
 You will find that the configurations from Cloud-init were NOT applied, and that libvirt cannot introspect the VM instance.
 To solve these issues, you will add Cloud-init and the QEMU guest agent to the bootc container image, build a new Qcow2 image, and validate the fix by provisioning another VM.
 
+include::ch1-bib:partial$set-permissive.adoc[]
+
 1. Prepare to start this activity by checking that you have the outcomes from previous activities.
 
 .. If needed, create a local clone of the sample code repository of this course, but do NOT enter its directory.

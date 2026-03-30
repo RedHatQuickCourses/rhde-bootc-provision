@@ -23,6 +23,8 @@ Make sure you verified your test environment by following the xref:ch1-bib:s3-pr
 
 You will use the bootc image builder utility to create a custom installation ISO, which embeds a bootc container image and a kickstart script for unattended installation, and use that custom ISO as a virtual DVD disk to install RHEL in a new VM.
 
+include::ch1-bib:partial$set-permissive.adoc[]
+
 1. Prepare to start this activity by checking that you have the outcomes from previous activities.
 
 .. If needed, create a local clone of the sample code repository of this course, but do NOT enter its directory.

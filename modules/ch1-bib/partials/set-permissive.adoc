@@ -1,0 +1,30 @@
+
+////
+[IMPORTANT]
+====
+The classroom environment has an issue which requires restoring SELinux context labels on the `worstation` VM.
+
+Perform the following to fix the issue before you attempt any lab of this course.
+
+[source,console,subs="verbatim,quotes"]
+--
+$ *sudo fixfiles -F onboot*
+$ *sudo shutdown -r now*
+--
+====
+////
+
+[IMPORTANT]
+====
+The classroom environment has an issue which requires setting SELinux to permissive mode. This is something Red Hat does *NOT* advise doing to any production system, including developer machines and CI/CD servers.
+
+On your _development machine_, perform the following before you attempt any lab in this course.
+
+[source,console,subs="verbatim,quotes"]
+--
+$ *sudo setenforce Permissive*
+--
+
+Note that SELinux is still in enforcing mode on your _server machine_ and also on all test VMs which stand in for managed devices.
+Only your _development machine_ needs SELinux set to permissive mode.
+====

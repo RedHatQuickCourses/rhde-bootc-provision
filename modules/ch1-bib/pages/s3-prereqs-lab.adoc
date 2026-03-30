@@ -26,6 +26,8 @@ If you are reusing the same classroom environment of the https://redhatquickcour
 
 In the end of this lab, you will build a bootc container image which you will use as the main sample application during the remainder of this course.
 
+include::ch1-bib:partial$set-permissive.adoc[]
+
 1. Verify that your _development machine_ has access to the RHEL package repositories from a DNF mirror.
 
 .. List the configured package repositories.
